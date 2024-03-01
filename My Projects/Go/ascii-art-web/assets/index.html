@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>FSM</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+    <script>
+        function Input() {
+            document.forms["theForm"].submit();
+        }
+    </script>
+</head>
+<body>
+    <div id="container">
+        <div id="inblock">
+            <br>
+            <div> <h1>UNIWORKHUB CODING SPACE</h1></div>
+                <video autoplay loop muted plays-inline class="back-video">
+                    <source src="/assets/video.mp4" type="video/mp4">
+                </video>
+                <form id="theForm" method="POST" action="/" target="asciiOutput">    
+                    <br> 
+                    <label>Your String </label><div></div>
+                    <br>
+                    <textarea name="text" id="text" cols="30" rows="10" oninput="Input()"></textarea>
+                    <div></div>
+                    <label name="string">Choose a style</label>
+                    <br>
+                    <br>
+                    <select name="banner" id="">
+                    <option value="standard">Standard</option>
+                    <option value="shadow">Shadow</option>
+                    <option value="thinkertoy">Thinkertoy</option>
+                  </select>
+                  <br>
+                  <br>
+                    <input type="submit" class='input_submit' value="SUBMIT"/>
+                    
+                    <br>
+                    <audio controls autoplay src="/assets/Cem-Karaca-Ceviz-Agaci.mp3"></audio>
+                    <br>
+                </form>
+                
+        </div>
+    </div>
+    
+    <div id="outfit">
+        
+       <iframe id="asciiOutput" name="asciiOutput">
+       </iframe>
+    </div>
+</body> 
+</html>
