@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>FSM</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+    <script>
+        function Inputin() {
+            document.forms["form1"].submit();
+        }
+    </script>
+</head>
+<body>
+    <div id ="inblock">
+        <br>
+        <div> <h1>UNIWORKHUB CODING SPACE</h1></div>
+            <div>
+                <form name="form1" id="form1" method="POST" action="/" target="asciiOutput">    
+                    <br> 
+                    <label>Your String </label><div></div>
+                    <br>
+                    <textarea name="text" id="text" cols="30" rows="10" oninput="Inputin()"></textarea>
+                    <div></div>
+                    <label name="string">Choose a style</label>
+                    <br>
+                    <br>
+                    <select name="banner" id="">
+                    <option value="standard">Standard</option>
+                    <option value="shadow">Shadow</option>
+                    <option value="thinkertoy">Thinkertoy</option>
+                  </select>
+                  <br>
+                  <br>
+                    <button type="submit" value="SUBMIT">Submit</button>
+                    <br>
+                    <br>
+                </form>
+                <div></div>
+            </div>
+    </div>
+    <div id="outfit">
+       <iframe id="asciiOutput" name="asciiOutput"></iframe>
+    </div>
+</body> 
+</html>
