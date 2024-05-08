@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>FSM</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+    <script>
+        function Inputin() {
+            document.forms["form1"].submit();
+        }
+
+        function downloadOutput(type) {
+            var iframe = document.getElementById('asciiOutput');
+            var content = iframe.contentDocument.body.innerText;// iframe'in HTML içeriği temizlenir sadece metin alınır
+            var filename = "ascii-art." + type; // indirilecek dosyanın adı
+            var blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+                var a = document.createElement("a"); // <a> etiketi oluştur
+                var url = URL.createObjectURL(blob); // Blob için URL oluştur
+                a.href = url; // <a> etiketinin href özelliğine URL'yi ata
+                a.download = filename; // İndirilecek dosyanın adını belirle
+                document.body.appendChild(a); // <a> etiketini belgeye ekle
+                a.click(); // otomatik tıklama yaparak indirme işlemini başlat
+                setTimeout(function() { // İşlem tamamlandıktan sonra...
+                    document.body.removeChild(a); // <a> etiketini belgeden kaldır
+                    window.URL.revokeObjectURL(url); // URL'yi iptal et
+                }, 0);
+            
+        }
+    </script>
+</head>
+<body>
+    <div id="inblock">
+        <br>
+        <div> <h1>UNIWORKHUB CODING SPACE</h1></div>
+            <div>
+                <form name="form1" id="form1" method="POST" action="/" target="asciiOutput">    
+                    <br> 
+                    <label>Your String </label><div></div>
+                    <br>
+                    <textarea name="text" id="text" cols="30" rows="10" oninput="Inputin()"></textarea>
+                    <div></div>
+                    <label name="string">Choose a style</label>
+                    <br>
+                    <br>
+                    <select name="banner" id="banner">
+                        <option value="standard">Standard</option>
+                        <option value="shadow">Shadow</option>
+                        <option value="thinkertoy">Thinkertoy</option>
+                    </select>
+                    <br>
+                    <br>
+                    <button type="submit" value="SUBMIT">Submit</button>
+                    <br>
+                    <br>
+                    <button onclick="downloadOutput('txt')">Download as TXT</button> <!-- TXT dosyası olarak indirme butonu -->
+                    <button onclick="downloadOutput('http')">Download as HTTP</button> <!-- HTTP dosyası olarak indirme butonu -->
+                    <br>
+                </form>
+                <div></div>
+            </div>
+    </div>
+    <div id="outfit">
+       <iframe id="asciiOutput" name="asciiOutput"></iframe>
+    </div>
+</body> 
+</html>
