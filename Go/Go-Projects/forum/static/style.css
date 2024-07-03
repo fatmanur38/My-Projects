@@ -1,0 +1,477 @@
+/* Genel Stil Ayarları */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.back-button {
+    position: absolute;
+    z-index: 1000;
+    background-color: transparent;
+    color: white;
+    padding: 0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    top: 120px;
+    left: 330px;
+}
+
+.back-button img {
+    width: 24px;
+    height: 24px;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+body {
+    background-color: #3B4752;
+    font-family: 'Source Sans Pro', sans-serif;
+    color: #ffffff;
+}
+
+/* Sayfa İçeriği İçin Konteyner */
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 80px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+/* İçerik Alanı Konteyneri */
+.content-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-top: 10px;
+    max-width: 1400px;
+}
+
+/* Sol ve Sağ Yan Çubuklar */
+.sidebar, .right-sidebar {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: auto;
+    position: fixed;
+    top: 100px;
+}
+
+.sidebar {
+    left: 60px;
+}
+
+.right-sidebar {
+    right: 60px;
+}
+
+/* Menü Alanları */
+.menu, .empty-menu {
+    background-color: #262d34bc;
+    border-radius: 16px;
+    padding: 20px;
+    height: 100%;
+    overflow: auto;
+}
+
+/* Menü Öğeleri */
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: #262d34bc;
+    margin: 5px 0;
+    border-radius: 8px;
+}
+
+.menu-item:hover {
+    background-color: #3B4752;
+}
+
+.menu-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.menu-text {
+    color: #FFF;
+    font-size: 16px;
+}
+
+/* Ana İçerik Alanı */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 300px;
+    max-width: 800px;
+    margin: 0 300px;
+    padding: 0 20px;
+}
+
+/* Gönderi Alanı */
+.post {
+    background-color: #262d34bc;
+    border-radius: 16px;
+    display: flex;
+    gap: 20px;
+    padding: 10px;
+    flex-direction: row;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.3s;
+    width: 110%;
+    height: 120%;
+}
+
+.post:hover {
+    transform: scale(1.05);
+}
+
+.post-image {
+    width: 156px;
+    height: 156px;
+    border-radius: 16px;
+    border: 1px solid rgba(43, 0, 212, 0.10);
+    box-shadow: 0px 2px 6px rgba(43, 0, 212, 0.06);
+    object-fit: cover;
+}
+
+/* Gönderi Detayları */
+.post-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.post-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #F7F7F7;
+    line-height: 26px;
+    word-wrap: break-word;
+}
+
+.post-tags {
+    display: flex;
+    gap: 10px;
+}
+
+.post-tag {
+    background-color: #2C353D;
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 10px;
+    color: #C5D0E6;
+    font-weight: 600;
+}
+
+.post-author {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.author-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #F0F1FE;
+}
+
+.author-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.author-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #F4F6F8;
+    line-height: 22px;
+    word-wrap: break-word;
+}
+
+.author-time {
+    font-size: 10px;
+    color: #C5D0E6;
+    font-weight: 400;
+    line-height: 16px;
+    word-wrap: break-word;
+}
+
+.post-stats {
+    display: flex;
+    gap: 20px;
+    margin-left: auto;
+    align-items: center;
+}
+
+.post-views, .post-likes, .post-dislikes, .post-comments {
+    font-size: 14px;
+    color: #C5D0E6;
+    font-weight: 400;
+    line-height: 22px;
+    word-wrap: break-word;
+}
+
+.post-actions {
+    align-self: flex-end;
+}
+
+.comment-button {
+    background: #4589fe;
+    border: none;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.comment-button:hover {
+    background-color: #4589fe;
+}
+
+.comment-section {
+    display: none;
+    width: 100%;
+    background: #262D34;
+    padding: 20px;
+    border-radius: 16px;
+    margin-top: 10px;
+}
+
+.comment-section textarea {
+    width: 100%;
+    background: #F4EFEF;
+    border: 2px solid rgba(59, 71, 82, 0.60);
+    border-radius: 24px;
+    padding: 10px;
+    font-size: 16px;
+    font-family: Roboto;
+    font-weight: 400;
+    color: #3B4752;
+    resize: none;
+    outline: none;
+    margin-bottom: 10px;
+}
+
+.comment-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.cancel-button, .comment-submit-button {
+    background: #4589fe81;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-family: Roboto;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+}
+
+.cancel-button:hover, .comment-submit-button:hover {
+    background: #013590;
+}
+
+/* Sort button styles */
+.sort-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 0px;
+}
+
+.sort-button {
+    background-color: #4589fe;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.sort-button:hover {
+    background-color: white;
+    color: black;
+    border: 2px solid #4589fe;
+}
+
+.sort-button.active {
+    background-color: #4589fe;
+    border: 2px solid #4589fe;
+    color: white;
+}
+
+/* Genel İkon Stilleri */
+.view-icon, .like-icon, .dislike-icon, .comment-icon {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 4px;
+    top: -4px;
+}
+
+/* Gönderi İstatistik Detayları */
+.post-views, .post-likes, .post-dislikes, .post-comments {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: -6px 0;
+}
+
+/* Gönderi İstatistiklerinde İkonların Konumlandırılması */
+.post-views img, .post-likes img, .post-dislikes img, .post-comments img {
+    position: relative;
+}
+.right-sidebar {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: auto;
+    position: fixed;
+    top: 100px;
+    right: 20px; /* Sağa 100 piksel kaydırıldı */
+
+}
+
+.most-liked-post, .most-commented-post {
+    background-color: #262D34;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.most-liked-post h3, .most-commented-post h3 {
+    color: #F7F7F7;
+    margin-bottom: 10px;
+}
+
+.right-sidebar .post {
+    background-color: #3B4752;
+    border-radius: 16px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+.right-sidebar .empty-menu iframe {
+    width: 200px; /* Genişliği 300px olarak ayarla */
+    height: 100px; /* Yüksekliği 200px olarak ayarla */
+}
+
+.right-sidebar .post-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #F7F7F7;
+    word-wrap: break-word;
+}
+
+.right-sidebar .post-author {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.right-sidebar .author-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.right-sidebar .author-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.right-sidebar .author-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #F4F6F8;
+}
+
+.right-sidebar .author-time {
+    font-size: 10px;
+    color: #C5D0E6;
+}
+
+.right-sidebar .post-stats {
+    display: flex;
+    gap: 10px;
+}
+
+.right-sidebar .post-likes, .right-sidebar .post-comments {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    color: #C5D0E6;
+}
+
+.right-sidebar .like-icon, .right-sidebar .comment-icon {
+    width: 16px;
+    height: 16px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .content-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sidebar, .right-sidebar {
+        width: 100%;
+        max-width: 300px;
+        position: relative;
+        top: auto;
+        left: auto;
+        right: auto;
+    }
+
+    .main-content {
+        width: 100%;
+        max-width: 600px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+

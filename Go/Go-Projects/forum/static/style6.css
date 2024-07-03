@@ -1,0 +1,192 @@
+.profile-details{
+    position: relative;
+    width: 860px;
+    height: 415px;
+    background-color: #2f373e;
+    border-radius: 20px;
+    border: 2px solid;
+    border-color: #262d34;
+    top: 12px;
+}
+
+.profile-avatar {
+    position: absolute;
+    width: 175px;
+    height: 175px;
+    top: 18px;
+    left: 18px;
+    border-radius: 50%;
+  }
+
+  .txt {
+    position: relative;
+    align-self: stretch;
+    font-family: "Source Sans Pro", Helvetica;
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 20px;
+    letter-spacing: 0.4px;
+    line-height: 35px;
+    top: 62px;
+    left: 244px;
+  }
+  
+  .txt-wrapper {
+    letter-spacing: 0.08px;
+  }
+
+  .rectangle {
+    position: absolute;
+    width: 821px;
+    height: 166px;
+    top: 230px;
+    left: 18px;
+    background-color: #3b4752;
+    border-radius: 20px;
+    padding: 10px; /* İç boşluk ekleme */
+    overflow-y: auto; /* Dikey kaydırma */
+    color: white; /* Yazı rengini beyaz yapma */
+    word-wrap: break-word; /* Uzun kelimeleri kırma */
+  }
+  
+  .about-txt {
+    white-space: pre-wrap; /* Metnin doğru şekilde sarılmasını sağlar */
+  }
+  h3 {
+    color: white; /* Başlık metni rengi */
+    font-family: "Source Sans Pro", Helvetica;
+    font-size: 24px; /* Yazı tipi boyutu */
+    font-weight: bold; /* Yazı tipi kalınlığı */
+    margin-top: -3px; /* Üstten boşluk */
+    margin-bottom: 10px; /* Alttan boşluk */
+    margin-left: 352px;
+  }
+  .rectangle-2 {
+    position: relative;
+    width: 860px; /* .profile-details ile aynı genişlik */
+    height: 408px;
+    top: 10px;
+    left: 0; /* .profile-details ile aynı sol hizaya getirilmiş */
+    background-color: #2f373e;
+    border-radius: 20px;
+    overflow-y: auto;
+
+    /* Kaydırma çubuğu stilini özelleştirme */
+    scrollbar-width: thin; /* Kaydırma çubuğunu inceltir */
+    scrollbar-color: #6c757d #2f373e; /* Kaydırma çubuğu ve arka plan rengini ayarlar */
+}
+
+/* Webkit tarayıcılar için kaydırma çubuğu stilini özelleştirme */
+.rectangle-2::-webkit-scrollbar {
+    width: 8px; /* Kaydırma çubuğunun genişliği */
+}
+
+.rectangle-2::-webkit-scrollbar-track {
+    background: #2f373e; /* Kaydırma yolu arka plan rengi */
+    border-radius: 10px; /* Köşeleri yuvarlat */
+}
+
+.rectangle-2::-webkit-scrollbar-thumb {
+    background-color: #6c757d; /* Kaydırma çubuğu rengi */
+    border-radius: 20px; /* Kaydırma çubuğu köşelerini yuvarlat */
+    border: 3px solid #2f373e; /* Kaydırma çubuğu etrafında boşluk */
+}
+
+
+  /* Dış kutu */
+  .pst {
+    background-color: #262D34;
+    border-radius: 16px;
+    display: flex;
+    gap: 20px;
+    padding: 15px;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.3s;
+    width: 90%;
+    height: 44%;
+    position: relative; 
+    top: 21px;
+    left: 41px; 
+    margin-bottom: 18px;
+  
+}
+
+
+.pst:hover {
+    transform: scale(1.05);
+}
+
+.pst-img {
+    /* Genişlik ve Yükseklik */
+    width: 156px;
+    height: 156px;
+    /* Köşe yuvarlatma */
+    border-radius: 16px;
+    /* Sınır */
+    border: 1px solid rgba(43, 0, 212, 0.10);
+    /* Gölge efekti */
+    box-shadow: 0px 2px 6px rgba(43, 0, 212, 0.06);
+    /* Resim boyutlandırma */
+    object-fit: cover;
+}
+
+
+/* Gönderi Detayları */
+.pst-detail {
+    /* Esneklik */
+    flex: 1;
+    /* Flexbox kullanımı */
+    display: flex;
+    /* Dikey yönde hizalama */
+    flex-direction: column;
+    /* Boşluk */
+    gap: 30px;
+}
+
+/* Gönderi Başlığı */
+.pst-titl {
+    /* Font boyutu */
+    font-size: 18px;
+    /* Font ağırlığı */
+    font-weight: 600;
+    /* Font rengi */
+    color: #F7F7F7;
+    /* Satır yüksekliği */
+    line-height: 26px;
+    /* Kelime kırpma */
+    word-wrap: break-word;
+}
+.pst-stat {
+    /* Flexbox kullanımı */
+    display: flex;
+    /* Boşluk */
+    gap: 20px;
+    /* Margin */
+    margin-left: auto;
+    /* Dikey yönde hizalama */
+    align-items: center;
+}
+
+/* Gönderi Etiketleri */
+.pst-tag {
+    /* Flexbox kullanımı */
+    display: flex;
+    /* Boşluk */
+    gap: 10px;
+
+}
+
+/* Görüntüleme, Beğeni, Beğenmeme ve Yorum Sayıları */
+.pst-view, .pst-like, .pst-dislike, .pst-comment {
+    /* Font boyutu */
+    font-size: 14px;
+    /* Font rengi */
+    color: #C5D0E6;
+    /* Font ağırlığı */
+    font-weight: 400;
+    /* Satır yüksekliği */
+    line-height: 22px;
+    /* Kelime kırpma */
+    word-wrap: break-word;
+}

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <!-- Summernote CSS -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs5.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/create.css">
+    <link rel="stylesheet" href="/static/upload.css">
+    <style>
+        .upload-container h2,
+        .container .title-label {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <div id="particles-js"></div>
+    <div class="header">
+        <a href="/" class="logo">
+            <span class="logo-divider"></span> <img src="/static/images/logo.png" alt="Home" class="logo-icon">
+            mindmerge
+        </a>
+        <div class="search-bar">
+            <input type="text" placeholder="Type here to search...">
+            <div class="search-icon"></div>
+        </div>
+        <div class="header-buttons">
+            <!-- Create butonu her zaman görünsün, ancak tıklanınca diğerleri görünsün -->
+            <form action="/profile" method="get" style="display:inline;">
+                <button type="submit" class="profile-button">Profile</button>
+            </form>
+            <form action="/logout" method="post" style="display:inline;">
+                <button type="submit" class="logout-button">Log Out</button>
+            </form>
+            <!-- Başlangıçta gizli, Create'e basılınca görünecek -->
+            <div id="userControls" style="display: none;">
+                <form action="/create" method="get" style="display:inline;">
+                    <button type="submit" class="create-button" id="createButton">Create</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container2">
+        <div class="upload-container">
+            <h2 >Upload</h2>
+            <form id="uploadForm" method="post" enctype="multipart/form-data">
+                <label for="title" class="title-label" >Title*:</label>
+                <input type="text" id="title" name="title" class="title-input" required>
+
+                <!-- Çoklu seçim checkbox ekleyelim -->
+                <label for="categories" class="title-label">Choose Categories*:</label><br>
+                <input type="checkbox" name="categories" value="movies"> Movies<br>
+                <input type="checkbox" name="categories" value="turkish"> Sport<br>
+                <input type="checkbox" name="categories" value="science"> Science<br>
+                <input type="checkbox" name="categories" value="food"> Food<br>
+                <input type="checkbox" name="categories" value="technology"> Technology<br>
+                <input type="checkbox" name="categories" value="health"> Health<br>
+
+                <!-- Summernote Editor -->
+                <div class="container">
+                    <label for="content" class="title-label">Content</label>
+                    <textarea name="content" id="summernote"></textarea>
+                </div>
+                
+                <div class="file-upload">
+                    <label for="file" class="title-label">Upload Image:</label>
+                    <input type="file" id="file" name="file">
+                    <button type="submit" class="button">Post</button>
+                </div>
+            </form>
+            <div id="previewContainer" style="display: none;">
+                <div id="previewImages" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+            </div>
+        </div>
+    </div>
+
+<!-- Summernote JS dosyalarını ekleyin -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote/dist/summernote.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#summernote').summernote({
+            height: 200  // Editörün yüksekliğini ayarlama
+        });
+    
+
+            $('#uploadForm').on('submit', function() {
+                // Ensure the Summernote content is placed into the textarea
+                var content = $('#summernote').summernote('code');
+                $('textarea[name="content"]').val(content);
+            });
+
+            document.getElementById('createButton').addEventListener('click', function(event) {
+                event.preventDefault(); // Formun varsayılan işlevini engelle
+                document.getElementById('userControls').style.display = 'inline'; // Kontrolleri görünür yap
+                this.style.display = 'none'; // Create butonunu gizle
+            });
+
+            // Formun gönderilmeden önce action özelliğini güncelle
+            document.getElementById('uploadForm').addEventListener('submit', function(event) {
+                const category = document.getElementById('category').value;
+                this.action = `/upload_${category}`;
+            });
+        });
+        particlesJS('particles-js', {
+        "particles": {
+            "number": {
+                "value": 80,
+                "density": {
+                    "enable": true,
+                    "value_area": 800
+                }
+            },
+            "color": {
+                "value": "#ffffff"
+            },
+            "shape": {
+                "type": "circle",
+                "stroke": {
+                    "width": 0,
+                    "color": "#000000"
+                },
+                "polygon": {
+                    "nb_sides": 5
+                },
+                "image": {
+                    "src": "img/github.svg",
+                    "width": 100,
+                    "height": 100
+                }
+            },
+            "opacity": {
+                "value": 0.5,
+                "random": false,
+                "anim": {
+                    "enable": false,
+                    "speed": 1,
+                    "opacity_min": 0.1,
+                    "sync": false
+                }
+            },
+            "size": {
+                "value": 3,
+                "random": true,
+                "anim": {
+                    "enable": false,
+                    "speed": 40,
+                    "size_min": 0.1,
+                    "sync": false
+                }
+            },
+            "line_linked": {
+                "enable": true,
+                "distance": 150,
+                "color": "#ffffff",
+                "opacity": 0.4,
+                "width": 1
+            },
+            "move": {
+                "enable": true,
+                "speed": 2,
+                "direction": "none",
+                "random": false,
+                "straight": false,
+                "out_mode": "out",
+                "bounce": false,
+                "attract": {
+                    "enable": false,
+                    "rotateX": 600,
+                    "rotateY": 1200
+                }
+            }
+        },
+        "interactivity": {
+            "detect_on": "canvas",
+            "events": {
+                "onhover": {
+                    "enable": true,
+                    "mode": "repulse"
+                },
+                "onclick": {
+                    "enable": true,
+                    "mode": "push"
+                },
+                "resize": true
+            },
+            "modes": {
+                "grab": {
+                    "distance": 400,
+                    "line_linked": {
+                        "opacity": 1
+                    }
+                },
+                "bubble": {
+                    "distance": 400,
+                    "size": 40,
+                    "duration": 2,
+                    "opacity": 8,
+                    "speed": 3
+                },
+                "repulse": {
+                    "distance": 200,
+                    "duration": 0.4
+                },
+                "push": {
+                    "particles_nb": 4
+                },
+                "remove": {
+                    "particles_nb": 2
+                }
+            }
+        },
+        "retina_detect": true
+    });
+    </script>
+</body>
+</html>

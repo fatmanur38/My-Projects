@@ -1,0 +1,53 @@
+.filter-container {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: auto;
+    position: fixed;
+    top: 145px;
+}
+.filter-button {
+    background-color: #262d34bc;
+    color: white; /* Düğmenin metin rengini beyaz olarak değiştirdim */
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 16px;
+    height: 38px; /* Yükseklik */
+    width: 250px; /* Genişlik */
+    position: absolute; /* Sol ve üst değerlerin çalışması için pozisyonu ayarladım */
+    left: 850px; /* Sol konumu */
+    top: -45px;
+}
+
+.filter-button:hover, .filter-button:focus {
+    background-color: #cacaca;
+}
+.filter-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f18b;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    left: 853px; /* Sol konumu */
+    top: -3px; /* Üst konumu */
+    width: 250px; /* Genişlik */
+    border-radius: 16px;
+    
+}
+.filter-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    border-radius: 16px;
+}
+.filter-content a:hover {
+    background-color: #ddd;
+}
+.show {
+    display: block;
+}

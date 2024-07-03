@@ -1,0 +1,424 @@
+body{
+  overflow-y: hidden;
+  background-color: #3b4752;
+  width: 100%;
+  width: 100%;
+}
+
+
+.back-button {
+  position: absolute; /* Absolut konumlandırma kullanarak tam yeri belirle */
+  z-index: 1000; /* Yüksek z-index değeri ile diğer elementlerin önüne geçer */
+  background-color: transparent; /* Arka plan rengini şeffaf yapar */
+  color: white;
+  padding: 0; /* İç boşlukları kaldırır */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block; /* Block olarak ayarlanabilir */
+  top: 109px; /* Üstten 20px boşluk bırakır */
+  left: 364px; /* Soldan 10px boşluk bırakır (isteğe bağlı) */
+}
+.back-button img {
+  width: 24px; /* İkonun genişliğini ayarlar */
+  height: 24px; /* İkonun yüksekliğini ayarlar */
+}
+
+
+.header {
+  width: 100%;
+  height: 80px;
+  background-color: #2F373E;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.logo {
+  color: #FF571A;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background-color: #3B4752;
+  border-radius: 8px;
+  padding: 10px;
+  width: 100%;
+  max-width: 440px;
+}
+
+.search-bar input {
+  width: 100%;
+  background: none;
+  border: none;
+  color: #858EAD;
+  font-size: 14px;
+}
+
+.search-bar .search-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #858EAD;
+  position: relative;
+}
+
+.search-bar .search-icon::after {
+  content: '';
+  width: 4px;
+  height: 4px;
+  border: 2px solid #858EAD;
+  position: absolute;
+  top: 15.5px;
+  left: 14.5px;
+}
+
+.header-buttons button {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.81);
+  font-size: 12px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 900;
+  padding: 10px 30px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 3px; 
+}
+
+
+
+.profile .profile-edit {
+  position: relative;
+  width: 937px;
+  height: 828px;
+  top: 113px;
+  left: 251px;
+  border-radius: 20px;
+}
+
+.profile .user-info {
+  position: absolute;
+  width: 809px;
+  height: 580px;
+  top: -16px;
+  left: 105px;
+  background-color: #2f373e;
+  border-radius: 50%;
+  border-radius: 20px;
+  border: 2px solid;
+  border-color: #262d34;
+}
+
+
+.profile .user-icon {
+  position: absolute;
+  width: 155px;
+  height: 155px;
+  top: 8px;
+  left: 331px;
+  border-radius: 50%; /* Daire şeklinde yapmak için */
+  object-fit: cover; /* Resmin boyuta uyması için */
+}
+
+
+.profile .input-bg {
+  width: 751px;
+  height: 133px;
+  top: 360px;
+  left: 128px;
+  padding: 20px 10px 0px 5px; 
+  position: absolute;
+  background-color: #f4eeee;
+  border-radius: 24px;
+  border: 2px solid;
+  border-color: #3b475299;
+}
+
+
+.profile .txt-wrapper {
+  position: absolute;
+  width: 402px;
+  height: 153px;
+  top: 156px;
+  left: 148px;
+  font-family: "Source Sans Pro", Helvetica;
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 17px;
+  letter-spacing: 0.4px;
+  line-height: normal;
+}
+
+.profile .diiv {
+  position: absolute;
+  width: 402px;
+  height: 153px;
+  top: 156px;
+  left: 553px;
+  font-family: "Source Sans Pro", Helvetica;
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 17px;
+  letter-spacing: 0.4px;
+  line-height: normal;
+}
+
+.profile .txt-wrapper-30 {
+  position: absolute;
+  width: 402px;
+  height: 153px;
+  top: 244px;
+  left: 148px;
+  font-family: "Source Sans Pro", Helvetica;
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 17px;
+  letter-spacing: 0.4px;
+  line-height: normal;
+}
+
+.profile .txt-wrapper-3 {
+  position: absolute;
+  width: 402px;
+  height: 153px;
+  top: 336px;
+  left: 148px;
+  font-family: "Source Sans Pro", Helvetica;
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 17px;
+  letter-spacing: 0.4px;
+  line-height: normal;
+}
+
+.profile .txt-wrapper-4 {
+  position: absolute;
+  width: 402px;
+  height: 153px;
+  top: 255px;
+  left: 73px;
+  font-family: "Source Sans Pro", Helvetica;
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 20px;
+  letter-spacing: 0.4px;
+  line-height: normal;
+}
+
+.profile .ellips {
+  position: absolute;
+  width: 33px;
+  height: 33px;
+  top: 6px;
+  left: 552px;
+  background-color: #e94409;
+  border-radius: 20px;
+}
+
+.profile .rect-2 {
+  width: 355px;
+  height: 44px;
+  top: 180px;
+  left: 130px;
+  position: absolute;
+  background-color: #f4eeee;
+  border-radius: 24px;
+  border: 2px solid;
+  border-color: #3b475299;
+}
+
+.profile .rect-3 {
+  width: 355px;
+  height: 44px;
+  top: 180px;
+  left: 536px;
+  position: absolute;
+  background-color: #f4eeee;
+  border-radius: 24px;
+  border: 2px solid;
+  border-color: #3b475299;
+}
+
+.profile .rect-4 {
+  position: absolute;
+  width: 355px;
+  height: 44px;
+  top: 268px;
+  left: 130px;
+  background-color: #f4eeee;
+  border-radius: 24px;
+  border: 2px solid;
+  border-color: #3b475299;
+}
+
+.profile .rect-5 {
+  width: 208px;
+  height: 52px;
+  top: 408px;
+  left: 498px;
+  position: absolute;
+  background-color: #f4eeee;
+  border-radius: 24px;
+  border: 2px solid;
+  border-color: #3b475299;
+}
+
+.profile .txt-wrapper-5 {
+  top: 296px;
+  left: 78px;
+  position: absolute;
+  height: 23px;
+  font-family: "Roboto", Helvetica;
+  font-weight: 600;
+  color: #00000059;
+  font-size: 20px;
+  letter-spacing: 0.4px;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.profile .txt-wrapper-6 {
+  top: 421px;
+  left: 73px;
+  position: absolute;
+  height: 23px;
+  font-family: "Roboto", Helvetica;
+  font-weight: 600;
+  color: #00000059;
+  font-size: 20px;
+  letter-spacing: 0.4px;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.profile .txt-wrapper-7 {
+  position: absolute;
+  height: 20px;
+  top: 800px;
+  left: 81px;
+  font-family: "Roboto", Helvetica;
+  font-weight: 600;
+  color: #00000059;
+  font-size: 20px;
+  letter-spacing: 0.4px;
+  line-height: normal;
+  white-space: nowrap;
+}
+  
+/* .profile .txt-wrapper-8 {
+  position: absolute;
+  height: 23px;
+  top: 277px;
+  left: 544px;
+  font-family: "Roboto", Helvetica;
+  font-weight: 700;
+  color: #000000bd;
+  font-size: 20px;
+  letter-spacing: 0.4px;
+  line-height: normal;
+  white-space: nowrap;
+} */
+
+.profile .txt-wrapper-8 {
+  position: absolute;
+  height: auto; /* Otomatik yükseklik */
+  top: 269px;
+  left: 539px;
+  font-family: "Roboto", Helvetica;
+  font-weight: 700;
+  color: #fff; /* Beyaz yazı rengi */
+  font-size: 20px;
+  letter-spacing: 0.4px;
+  line-height: normal;
+  white-space: nowrap;
+  background-color: #fd4a09e3; /* Yeşil arka plan rengi */
+  border: none; /* Kenarlık yok */
+  border-radius: 20px; /* Yuvarlatılmış köşeler */
+  padding: 10px 20px; /* İç boşluklar */
+  cursor: pointer; /* Fare imlecini işaretçiye dönüştür */
+  transition: background-color 0.3s; /* Arka plan rengini yavaşça değiştirir */
+}
+
+.profile .txt-wrapper-8:hover {
+  background-color: #fb7341e3; /* Hover durumunda daha koyu yeşil */
+}
+
+.profile .txt-wrapper-2 {
+  position: absolute;
+  width: 402px;
+  height: 153px;
+  top: 382px;
+  left: 73px;
+  font-family: "Source Sans Pro", Helvetica;
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 20px;
+  letter-spacing: 0.4px;
+  line-height: normal;
+}
+
+.profile .txt-wrapper-9 {
+  position: absolute;
+  height: 23px;
+  top: 296px;
+  left: 518px;
+  font-family: "Roboto", Helvetica;
+  font-weight: 600;
+  color: #00000059;
+  font-size: 20px;
+  letter-spacing: 0.4px;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.profile .button1 {
+  box-sizing: border-box;
+  display: flex;
+  width: 91px;
+  height: 29px;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  position: absolute;
+  top: 529px;
+  left: 802px;
+  background-color: #ff4401e3;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.profile .txt-wrapper-10 {
+  position: relative;
+  width: 62px;
+  height: 16px;
+  margin-top: -10px;
+  margin-bottom: -3px;
+  margin-right: -1px;
+  font-family: "Roboto", Helvetica;
+  font-weight: 900;
+  color: #ffffff;
+  font-size: 15px;
+  letter-spacing: 0.3px;
+  line-height: normal;
+  white-space: nowrap;
+  left: -4px;
+}
+
+.profile .cont-cont {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  top: 12px;
+  left:558px;
+}

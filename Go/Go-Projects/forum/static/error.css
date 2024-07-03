@@ -1,0 +1,28 @@
+.error {
+    color: red;
+    padding: 5px;
+    margin-bottom: -6px;
+    border-radius: 5px;
+}
+
+.error .icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background-image: url('path_to_error_icon.png'); /* Hata simgesi için bir URL ekleyin */
+    background-size: contain;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.error-message {
+    color: red; /* Hata mesajının rengini kırmızı yapar */
+    border-radius: 5px; /* Köşeleri yuvarlak yapar */
+    font-family: Arial, sans-serif; /* Font tipini belirler */
+    font-size: 14px; /* Font büyüklüğünü belirler */
+    text-align: center; /* Metni ortalar */
+    box-shadow: 0 rgba(0,0,0,0.1); /* Hafif bir gölge ekler */
+    margin-top: 15px;
+    margin-left: -158px;
+    font-weight: 300%;
+  }

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="/static/sifre.css">
+    <link rel="stylesheet" href="/static/error.css">
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <div id="particles-js"></div>
+    <div class="header">
+         <a href="/" class="logo">
+                <span class="logo-divider"></span> <img src="/static/images/logo.png" alt="Home" class="logo-icon">
+                mindmerge
+            </a>
+        <div class="search-bar">
+            <input type="text" placeholder="Type here to search...">
+            <div class="search-icon"></div>
+        </div>
+        <div class="header-buttons">
+            <form action="/profile" method="get" style="display:inline;">
+                <button type="submit" class="profile-button">Profile</button>
+            </form>
+            <form action="/upload" method="get" style="display:inline;">
+                <button type="submit" class="create-button">Create</button>
+            </form>
+            <form action="/logout" method="post" style="display:inline;">
+                <button type="submit" class="logout-button">Log Out</button>
+            </form>
+        </div>
+    </div>
+    <div class="post">
+        <div class="overlap-group">
+            <div class="group">
+                <img class="vector" src="{{if .UserIcon}}{{.UserIcon}}{{else}}/static/images/vector-1.png{{end}}" />
+                <p class="username">{{.Username}}</p>
+                <p class="email">{{.Email}}</p>
+                <p class="name">{{.Name}}</p>
+                <p class="about">{{.About}}</p>
+                <div class="ellipse"></div>
+            </div>
+            <div class="rectangle-2"></div>
+            <div class="text-wrapper-30">Name</div>
+             <!-- Bu satır kaldırıldı: <div class="text-wrapper-5">Enter your name</div> -->
+
+            <div class="rectangle-4"></div>
+            <div class="text-wrapper-2">Username</div>
+            <!-- Bu satır kaldırıldı: <div class="text-wrapper-6">Enter your username</div> -->
+
+            <div class="rectangle"></div>
+            <div class="text-wrapper-3">About</div>
+            <!-- Bu satır kaldırıldı: <div class="text-wrapper-7">Enter about yourself</div> -->
+
+            <div class="rectangle-5"></div>
+            <div class="text-wrapper">Password</div>
+            <div class="text-wrapper-8">Change password</div>
+
+            <div class="rectangle-3"></div>
+            <div class="div">Email</div>
+              <!-- Bu satır kaldırıldı: <div class="text-wrapper-9">fatma@gmail.com</div> -->
+
+            <button class="button">
+                <div class="text-wrapper-10">Submit</div>
+            </button>
+            <img class="content-content" src="/static/images/content-22-content-edit-pen-write-tool-icon-1.svg" />
+
+            <form action="/change_password" method="POST" class="rectangle-6">
+                {{if .ErrorMessage}}
+                <div class="error-message">{{.ErrorMessage}}</div>
+                {{end}}
+                <div class="rectangle-10">
+                    <input type="password" name="old_password" placeholder="Enter your current password" required class="password-input">
+                </div>
+                <div class="rectangle-7">
+                    <input type="password" name="new_password" placeholder="Enter your new password" required class="password-input">
+                </div>
+                <div class="rectangle-9">
+                    <input type="password" name="confirm_new_password" placeholder="Confirm new password" required class="password-input">
+                </div>
+                <button type="submit" class="text-wrapper-12">
+                    <div class="button1">Confirm</div>
+                </button>
+            </form>
+            <button type="button" class="back-button" onclick="window.location.href='/edit';">
+                <img src="/static/images/back.svg" alt="Geri Dön" style="width: 24px; height: 24px;">
+            </button>
+            <div class="text-wrapper-11">change password</div>
+            <form action="/edit">
+                <div class="button">
+                    <div class="text-wrapper-10">Submit</div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        particlesJS('particles-js', {
+        "particles": {
+            "number": {
+                "value": 80,
+                "density": {
+                    "enable": true,
+                    "value_area": 800
+                }
+            },
+            "color": {
+                "value": "#ffffff"
+            },
+            "shape": {
+                "type": "circle",
+                "stroke": {
+                    "width": 0,
+                    "color": "#000000"
+                },
+                "polygon": {
+                    "nb_sides": 5
+                },
+                "image": {
+                    "src": "img/github.svg",
+                    "width": 100,
+                    "height": 100
+                }
+            },
+            "opacity": {
+                "value": 0.5,
+                "random": false,
+                "anim": {
+                    "enable": false,
+                    "speed": 1,
+                    "opacity_min": 0.1,
+                    "sync": false
+                }
+            },
+            "size": {
+                "value": 3,
+                "random": true,
+                "anim": {
+                    "enable": false,
+                    "speed": 40,
+                    "size_min": 0.1,
+                    "sync": false
+                }
+            },
+            "line_linked": {
+                "enable": true,
+                "distance": 150,
+                "color": "#ffffff",
+                "opacity": 0.4,
+                "width": 1
+            },
+            "move": {
+                "enable": true,
+                "speed": 2,
+                "direction": "none",
+                "random": false,
+                "straight": false,
+                "out_mode": "out",
+                "bounce": false,
+                "attract": {
+                    "enable": false,
+                    "rotateX": 600,
+                    "rotateY": 1200
+                }
+            }
+        },
+        "interactivity": {
+            "detect_on": "canvas",
+            "events": {
+                "onhover": {
+                    "enable": true,
+                    "mode": "repulse"
+                },
+                "onclick": {
+                    "enable": true,
+                    "mode": "push"
+                },
+                "resize": true
+            },
+            "modes": {
+                "grab": {
+                    "distance": 400,
+                    "line_linked": {
+                        "opacity": 1
+                    }
+                },
+                "bubble": {
+                    "distance": 400,
+                    "size": 40,
+                    "duration": 2,
+                    "opacity": 8,
+                    "speed": 3
+                },
+                "repulse": {
+                    "distance": 200,
+                    "duration": 0.4
+                },
+                "push": {
+                    "particles_nb": 4
+                },
+                "remove": {
+                    "particles_nb": 2
+                }
+            }
+        },
+        "retina_detect": true
+    });
+    </script>
+</body>
+</html>

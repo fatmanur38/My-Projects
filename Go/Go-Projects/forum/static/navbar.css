@@ -1,0 +1,93 @@
+/* Header (Üst Kısım) */
+.header {
+    width: 100%;
+    height: 80px;
+    background: linear-gradient(80deg, #2F373E 20%, #273037 60%) !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+/* Arama Çubuğu */
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #3B4752;
+    border-radius: 8px;
+    padding: 10px;
+    width: 100%;
+    max-width: 440px;
+}
+
+/* Arama Çubuğu İnput Alanı */
+.search-bar input {
+    width: 100%;
+    background: none;
+    border: none;
+    color: #858EAD;
+    font-size: 14px;
+}
+
+/* Header Düğmeleri */
+.header-buttons button {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.81);
+    font-size: 12px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 900;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Kayıt Ol Düğmesi */
+.header-buttons .register-button {
+    background-color: #4589fe;
+    color: white;
+}
+
+/* Logo */
+.logo {
+    color: #b9bcfb7d;
+    font-size: 26px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+}
+
+/* Logo İkon */
+.logo-icon {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+
+@media (max-width: 480px) {
+    /* Header */
+    .header {
+        flex-direction: column;
+        height: auto;
+        padding: 10px;
+    }
+
+    /* Header Düğmeleri */
+    .header-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    /* Arama Çubuğu */
+    .search-bar {
+        width: 100%;
+    }
+}

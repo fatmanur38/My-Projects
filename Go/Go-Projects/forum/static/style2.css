@@ -1,0 +1,46 @@
+/* Summernote Editör Stilleri */
+
+#summernote {
+    border: 1px solid #ccc; /* Kenarlık ekler */
+    border-radius: 5px; /* Köşeleri yuvarlatır */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Gölgelendirme ekler */
+}
+
+.note-editor {
+    border-radius: 5px; /* Summernote editörünün köşelerini yuvarlatır */
+}
+
+.note-toolbar {
+    background-color: #f8f9fa; /* Araç çubuğunun arka plan rengini varsayılan yapar */
+    border-bottom: 1px solid #e9ecef; /* Araç çubuğunun altına kenarlık ekler */
+}
+
+.note-toolbar .note-btn {
+    background-color: white !important; /* Butonların arka plan rengini beyaz yapar */
+    color: black !important; /* Butonların yazı rengini siyah yapar */
+    border: 1px solid #ccc !important; /* Butonlara kenarlık ekler */
+}
+
+.note-toolbar .note-btn:hover,
+.note-toolbar .note-btn:focus {
+    background-color: #e9ecef !important; /* Hover ve focus durumlarında arka plan rengini değiştirir */
+    color: black !important; /* Hover ve focus durumlarında yazı rengini siyah yapar */
+}
+
+.note-toolbar .note-btn.active {
+    background-color: #e9ecef !important; /* Aktif butonların arka plan rengini değiştirir */
+    color: black !important; /* Aktif butonların yazı rengini siyah yapar */
+}
+
+.note-editable {
+    padding: 15px; /* Metin yazma alanına iç boşluk ekler */
+    line-height: 1.5; /* Satır yüksekliğini ayarlar */
+    font-size: 14px; /* Font boyutunu ayarlar */
+    background-color: white; /* Yazma alanının arka plan rengini beyaz yapar */
+    color: #333; /* Yazı rengini koyu yapar */
+}
+
+.note-statusbar {
+    background-color: #f8f9fa; /* Durum çubuğunun arka plan rengini ayarlar */
+    border-top: 1px solid #e9ecef; /* Durum çubuğunun üstüne kenarlık ekler */
+}

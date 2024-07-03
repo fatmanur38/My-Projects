@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindmerge - Register</title>
+    <link rel="stylesheet" href="/static/style1.css">
+    <link rel="stylesheet" href="/static/error.css">
+</head>
+<body onload="showRegisterForm()">
+    <div class="container">
+        <div class="navbar">
+            <div class="navbar-left">
+                <a href="/" class="logo">mindmerge</a>
+                <div class="divider"></div>
+            </div>
+            <div class="auth-buttons">
+                <div class="button register" onclick="showRegisterForm()">
+                    <div class="icon">
+                        <div class="icon-part1"></div>
+                        <div class="icon-part2"></div>
+                        <div class="icon-part3"></div>
+                        <div class="icon-part4"></div>
+                        <img src="https://cdn-icons-png.flaticon.com/512/271/271210.png" alt="Register Icon" class="register-icon">
+                    </div>
+                    <div class="text">Register</div>
+                </div>
+                <div class="button login" onclick="window.location.href='/login'">Login</div>
+            </div>
+        </div>
+        <div id="registerForm" class="form-container">
+            {{if .RegisterErrorMsg}}
+            <div class="error">
+                <div class="icon"></div>
+                <div>{{.RegisterErrorMsg}}</div>
+            </div>
+            <script>
+                document.getElementById('registerForm').style.display = 'block';
+            </script>
+            {{end}}
+            <form action="/register" method="POST">
+                <h2>Register</h2>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" placeholder="Choose a username" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="example@example.com" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <label for="confirmPassword">Confirm Password:</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter your password" required>
+                <button type="submit">Register</button>
+                <div class="alternative-options">
+                    <span>or continue with</span>
+                    <div class="social-buttons">
+                        <a href="/auth/google/login" class="google">
+                            <img src="https://cdn4.iconfinder.com/data/icons/logos-brands-7/512/google_logo-google_icongoogle-512.png" alt="Google" class="social-icon">
+                        </a>                        
+                        <a href="/auth/github" class="github">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" class="social-icon">
+                        </a>
+                        <a href="/auth/facebook" class="facebook">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_(2019).svg" alt="Facebook" class="social-icon">
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        function showRegisterForm() {
+            document.getElementById('registerForm').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

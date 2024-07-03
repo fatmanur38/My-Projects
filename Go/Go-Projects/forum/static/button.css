@@ -1,0 +1,44 @@
+.vote-btn, .like-button, .dislike-button {
+    cursor: pointer;
+    outline: 0;
+    color: #AAA;
+    border-radius: 50%;
+    border: 2px solid #AAA;
+    background-color: transparent;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s, border-color 0.3s, transform 0.3s;
+}
+
+.vote-btn:focus, .like-button:focus, .dislike-button:focus {
+    outline: none;
+}
+
+.vote-btn:hover, .like-button:hover, .dislike-button:hover {
+    color: #555;
+    border-color: #555;
+    transform: scale(1.1);
+}
+
+.green {
+    color: green;
+    border-color: green;
+}
+
+.red {
+    color: red;
+    border-color: red;
+}
+
+.green:hover {
+    color: #0f0;
+    border-color: #0f0;
+}
+
+.red:hover {
+    color: #f00;
+    border-color: #f00;
+}

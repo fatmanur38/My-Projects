@@ -1,0 +1,456 @@
+/* Sayfa arka planı ve genel stil */
+body {
+    /* Marjı sıfırla */
+    margin: 0;
+    /* Yazı tipi */
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    /* Arka plan resmi ekle */
+    background: url("../static/images/arka\ plan.png") no-repeat center center fixed;
+    /* Resmi arka plana sığdır */
+    background-size: cover;
+}
+
+/* İçerik konteyneri */
+.container {
+    /* Genişlik %100 */
+    width: 100%;
+    /* Minimum yükseklik ekran yüksekliği */
+    min-height: 100vh;
+    /* Arka plan rengi */
+    background: rgba(47, 55, 62, 0.80);
+    /* Elemanları dikey olarak hizala */
+    display: flex;
+    flex-direction: column;
+    /* Elemanları yatay olarak ortala */
+    align-items: center;
+    /* Üstten boşluk */
+    padding-top: 80px;
+    /* Kutu modelinin boyutlandırması */
+    box-sizing: border-box;
+}
+
+/* Hata mesajı stili */
+.error {
+    /* Kırmızı renk */
+    color: red;
+    /* İç ve dış boşluk */
+    padding: 5px;
+    /* Alttaki boşluğu negatif ayarla */
+    margin-bottom: -6px;
+    /* Yuvarlatılmış köşeler */
+    border-radius: 5px;
+}
+
+/* Hata simgesi */
+.error .icon {
+    /* Simgeyi satır içi blok olarak göster */
+    display: inline-block;
+    /* Genişlik ve yükseklik */
+    width: 20px;
+    height: 20px;
+    /* Hata simgesi için URL ekle */
+    background-image: url('path_to_error_icon.png'); 
+    /* Simgeyi kutunun içine sığdır */
+    background-size: contain;
+    /* Sağ tarafa boşluk bırak */
+    margin-right: 10px;
+    /* Dikey hizalama */
+    vertical-align: middle;
+}
+
+/* Navigasyon çubuğu */
+.navbar {
+    /* Genişlik %100 */
+    width: 100%;
+    /* Yükseklik */
+    height: 80px;
+    /* Arka plan rengi */
+    background: #2F373E;
+    /* Elemanları yatay ve dikey olarak hizala */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* İç ve dış boşluk */
+    padding: 0 20px;
+    /* Kutu modelinin boyutlandırması */
+    box-sizing: border-box;
+    /* Pozisyon sabitle */
+    position: fixed;
+    /* Üst ve sol kenarlara sıfır */
+    top: 0;
+    left: 0;
+    /* Z-indeksi */
+    z-index: 1000;
+}
+
+/* Navigasyon çubuğunun sol tarafı */
+.navbar-left {
+    /* Elemanları yatay ve dikey olarak hizala */
+    display: flex;
+    align-items: center;
+}
+
+/* Logo */
+.logo {
+    /* Renk */
+    color: #FF571A;
+    /* Yazı tipi boyutu */
+    font-size: 26px;
+    /* Yazı tipi */
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    /* Yazı tipi kalınlığı */
+    font-weight: 700;
+    /* Satır yüksekliği */
+    line-height: 38px;
+}
+
+/* Bölücü çizgi */
+.divider {
+    /* Genişlik */
+    width: 1px;
+    /* Yükseklik */
+    height: 38px;
+    /* Arka plan rengi */
+    background: white;
+    /* Soldan boşluk */
+    margin-left: 10px;
+}
+
+/* Giriş/Kayıt butonları */
+.auth-buttons {
+    /* Elemanları yatay olarak hizala */
+    display: flex;
+    /* Elemanlar arasındaki boşluk */
+    gap: 10px;
+}
+
+/* Buton stili */
+.button {
+    /* İç ve dış boşluk */
+    padding: 12px 20px;
+    /* Yuvarlatılmış köşeler */
+    border-radius: 5px;
+    /* Elemanları yatay ve dikey olarak hizala */
+    display: flex;
+    align-items: center;
+    /* Elemanlar arasındaki boşluk */
+    gap: 12px;
+    /* Yazı tipi boyutu */
+    font-size: 12px;
+    /* Yazı tipi */
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    /* Yazı tipi kalınlığı */
+    font-weight: 900;
+    /* Harf boşluğu */
+    letter-spacing: 0.24px;
+    /* Yazı rengi */
+    color: white;
+    /* İmleç */
+    cursor: pointer;
+}
+
+/* Kayıt butonu */
+.register {
+    /* Arka plan rengi */
+    background-color: #FF571A;
+}
+
+/* Giriş butonu */
+.login {
+    /* Arka plan rengi */
+    background-color: #3B4752;
+}
+
+/* Simge */
+.icon {
+    /* Genişlik ve yükseklik */
+    width: 13px;
+    height: 13px;
+    /* Pozisyon */
+    position: relative;
+}
+
+/* Kayıt simgesi */
+.register-icon {
+    /* Genişlik ve yükseklik */
+    width: 20px;
+    height: 20px;
+}
+
+/* Form konteyneri */
+.form-container {
+    /* Başlangıçta gizli */
+    display: none;
+    /* Elemanları dikey olarak hizala */
+    flex-direction: column;
+    /* Elemanları yatay olarak ortala */
+    align-items: center;
+    /* Arka plan rengi */
+    background: rgba(47, 55, 62, 0.89);
+    /* İç ve dış boşluk */
+    padding: 20px;
+    /* Yuvarlatılmış köşeler */
+    border-radius: 21px;
+    /* Üstten boşluk */
+    margin-top: 20px;
+    /* Genişlik %100 */
+    width: 100%;
+    /* Maksimum genişlik */
+    max-width: 400px;
+    /* Kutu modelinin boyutlandırması */
+    box-sizing: border-box;
+}
+
+/* Form */
+form {
+    /* Elemanları dikey olarak hizala */
+    display: flex;
+    flex-direction: column;
+    /* Genişlik %100 */
+    width: 100%;
+}
+
+/* Form başlığı */
+form h2 {
+    /* Alttaki boşluk */
+    margin-bottom: 20px;
+    /* Yazı rengi */
+    color: white;
+    /* Yazı tipi boyutu */
+    font-size: 32px;
+    /* Yazı tipi */
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    /* Yazı tipi kalınlığı */
+    font-weight: 700;
+    /* Metin hizalaması */
+    text-align: center;
+}
+
+/* Etiket */
+label {
+    /* Yazı rengi */
+    color: white;
+    /* Alttaki boşluk */
+    margin-bottom: 5px;
+    /* Yazı tipi boyutu */
+    font-size: 16px;
+    /* Yazı tipi */
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    /* Yazı tipi kalınlığı */
+    font-weight: 700;
+}
+
+/* Giriş kutusu */
+input {
+    /* Alttaki boşluk */
+    margin-bottom: 20px;
+    /* İç ve dış boşluk */
+    padding: 10px;
+    /* Yuvarlatılmış köşeler */
+    border-radius: 5px;
+    /* Sınır */
+    border: none;
+    /* Kutu modelinin boyutlandırması */
+    box-sizing: border-box;
+    /* Yazı tipi boyutu */
+    font-size: 14px;
+    /* Yazı tipi */
+    font-family: 'Helvetica', 'Arial', sans-serif;
+}
+
+/* Buton */
+button {
+    /* İç ve dış boşluk */
+    padding: 10px;
+    /* Yuvarlatılmış köşeler */
+    border-radius: 10px;
+    /* Sınır */
+    border: none;
+    /* Arka plan rengi */
+    background: #FF571A;
+    /* Yazı rengi */
+    color: white;
+    /* Yazı tipi kalınlığı */
+    font-weight: bold;
+    /* İmleç */
+    cursor: pointer;
+    /* Yazı tipi boyutu */
+    font-size: 16px;
+    /* Yazı tipi */
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    /* Yazı tipi kalınlığı */
+    font-weight: 700;
+    /* Harf boşluğu */
+    letter-spacing: 0.40px;
+    /* Geçiş efekti */
+    transition: background-color 0.3s;
+}
+
+/* Butona mouse üzerine geldiğinde arka plan rengi */
+button:hover {
+    background: #e04e17;
+}
+
+/* Alternatif seçenekler */
+.alternative-options {
+    /* Elemanları dikey olarak hizala */
+    display: flex;
+    flex-direction: column;
+    /* Elemanları yatay olarak ortala */
+    align-items: center;
+    /* Üstten boşluk */
+    margin-top: 20px;
+}
+
+/* Alternatif seçenekler metni */
+.alternative-options span {
+    /* Yazı rengi */
+    color: white;
+    /* Yazı tipi boyutu */
+    font-size: 14px;
+    /* Yazı tipi */
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    /* Yazı tipi kalınlığı */
+    font-weight: 400;
+    /* Alttaki boşluk */
+    margin-bottom: 10px;
+}
+
+/* Sosyal medya butonları */
+.social-buttons {
+    /* Elemanları yatay olarak hizala */
+    display: flex;
+    /* Elemanlar arasındaki boşluk */
+    gap: 10px;
+}
+
+/* Sosyal medya butonları bağlantıları */
+.social-buttons a {
+    /* Genişlik ve yükseklik */
+    width: 44.96px;
+    height: 44.96px;
+    /* Yuvarlatılmış köşeler */
+    border-radius: 10px;
+    /* Sınır */
+    border: 1px #BCBEC0 solid;
+    /* Arka plan rengi */
+    background: white;
+    /* Elemanları yatay ve dikey olarak hizala */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Metin süslemeyi kaldır */
+    text-decoration: none;
+    /* İmleç */
+    cursor: pointer;
+    /* Geçiş efekti */
+    transition: transform 0.3s;
+}
+
+/* Sosyal medya butonlarına mouse üzerine geldiğinde */
+.social-buttons a:hover {
+    /* Büyütme */
+    transform: scale(1.1);
+}
+
+/* Sosyal medya butonları içindeki resim */
+.social-buttons img {
+    /* Genişlik ve yükseklik */
+    width: 24px;
+    height: 24px;
+}
+
+/* Ek bağlantılar */
+.additional-links {
+    /* Elemanları dikey olarak hizala */
+    display: flex;
+    flex-direction: column;
+    /* Elemanları yatay olarak ortala */
+    align-items: center;
+    /* Üstten boşluk */
+    margin-top: 20px;
+}
+
+/* Ek bağlantılar metni */
+.additional-links span {
+    /* Yazı rengi */
+    color: white;
+    /* Yazı tipi boyutu */
+    font-size: 14px;
+    /* Yazı tipi */
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    /* Yazı tipi kalınlığı */
+    font-weight: 400;
+    /* Alttaki boşluk */
+    margin-bottom: 5px;
+}
+
+/* Ek bağlantılar bağlantıları */
+.additional-links a {
+    /* Yazı rengi */
+    color: #FF571A;
+    /* Yazı tipi boyutu */
+    font-size: 14px;
+    /* Yazı tipi */
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    /* Yazı tipi kalınlığı */
+    font-weight: 700;
+    /* Metin süslemeyi kaldır */
+    text-decoration: none;
+}
+
+/* Ek bağlantılar bağlantıları üzerinde mouse olduğunda */
+.additional-links a:hover {
+    /* Alt çizgi ekle */
+    text-decoration: underline;
+}
+
+/* Duyarlılık */
+/* 768 pikselden küçük ekranlar için stil */
+@media (max-width: 768px) {
+    /* Navigasyon çubuğunu dikey hale getir */
+    .navbar {
+        /* Elemanları dikey olarak hizala */
+        flex-direction: column;
+        /* Elemanları sol tarafa hizala */
+        align-items: flex-start;
+        /* Yüksekliği otomatik hale getir */
+        height: auto;
+        /* İç ve dış boşluk */
+        padding: 10px 20px;
+    }
+
+    /* Bölücü çizgiyi yatay hale getir */
+    .divider {
+        /* Genişlik %100 */
+        width: 100%;
+        /* Yükseklik */
+        height: 1px;
+        /* Üst ve alt boşluk */
+        margin: 10px 0;
+    }
+
+    /* Giriş/Kayıt butonlarını yatay olarak hizala */
+    .auth-buttons {
+        /* Genişlik %100 */
+        width: 100%;
+        /* Elemanları sağa ve sola hizala */
+        justify-content: space-between;
+    }
+
+    /* Butonları esnek yap */
+    .button {
+        /* Esnekliği 1 olarak ayarla */
+        flex: 1;
+        /* Elemanları yatay ve dikey olarak ortala */
+        justify-content: center;
+        /* İç ve dış boşluk */
+        padding: 12px 10px;
+    }
+
+    /* İçerik konteynerinde üstten boşluğu arttır */
+    .container {
+        /* Üstten boşluk */
+        padding-top: 100px;
+    }
+}
