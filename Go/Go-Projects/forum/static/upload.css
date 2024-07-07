@@ -1,0 +1,250 @@
+/* Genel Stil Ayarları */
+* {
+    /* Tüm elementlerin margin ve padding'ini sıfırlar */
+    margin: 0;
+    padding: 0;
+    /* Box modelinin border dahil hesaplanmasını sağlar */
+    box-sizing: border-box;
+}
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+html, body {
+    /* Tam ekran genişliğini ve yüksekliğini ayarlar */
+    height: 100%;
+    width: 100%;
+    /* Margin ve padding'i sıfırlar */
+    margin: 0;
+    padding: 0;
+    /* Yatay kaydırma çubuğunu gizler */
+    overflow-x: hidden;
+}
+
+
+body {
+    background-color: #3B4752;
+    margin: 0; /* Yan boşlukları kaldırmak için */
+    padding: 0; /* Yan boşlukları kaldırmak için */
+    overflow-x: hidden; /* Yatay kaydırma çubuğunu gizlemek için */
+}
+
+/* Beyaz kutu için stil */
+.upload-container {
+    background-color: rgba(255, 255, 255, 0.759); /* Arka plan rengi */
+    padding: 20px; /* İç boşluk */
+    border-radius: 8px; /* Köşe yuvarlama */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Gölge efekti */
+    width: 100%; /* Genişlik %100 */
+    max-width: 900px; /* Maksimum genişlik */
+    margin: 20px auto; /* Merkezi hizalama */
+}
+
+/* Mevcut container stilini güncelleme */
+.container2 {
+    width: 100%; /* Genişlik %100 */
+    display: flex;
+    flex-direction: column;
+    margin-top: 100px; /* Header yüksekliği kadar */
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+/* Title, kategoriler, içerik ve dosya yükleme stili */
+.upload-container input[type="text"],
+.upload-container textarea,
+.upload-container input[type="file"],
+.upload-container select {
+    width: 100%; /* Genişlik %100 */
+    padding: 10px; /* İç boşluk */
+    margin-bottom: 10px; /* Alt boşluk */
+    border: 1px solid #ccc; /* Sınır */
+    border-radius: 4px; /* Köşe yuvarlama */
+    box-sizing: border-box; /* Box model */
+}
+
+.upload-container label {
+    margin-bottom: 5px; /* Alt boşluk */
+    display: block; /* Blok görüntüleme */
+}
+
+/* Checkbox stili */
+.upload-container input[type="checkbox"] {
+    margin-right: 5px; /* Sağ boşluk */
+}
+
+/* Dosya yükleme ve buton için stil */
+.upload-container .file-upload {
+    display: flex; /* Flexbox kullanımı */
+    align-items: center; /* Dikey hizalama */
+    justify-content: space-between; /* Yatay boşluk yayma */
+    gap: 10px; /* Öğeler arası boşluk */
+}
+
+/* Buton stilini güncelleme */
+.upload-container button {
+    background-color: #4589fe; /* Arka plan rengi */
+    color: white; /* Font rengi */
+    border: none; /* Sınır yok */
+    padding: 10px 20px; /* İç boşluk */
+    border-radius: 4px; /* Köşe yuvarlama */
+    cursor: pointer; /* İmleç */
+}
+
+.upload-container button:hover {
+    background-color: #0b3c91; /* Hover rengi */
+}
+
+/* İçerik (Content) alanı */
+.upload-container .container {
+    width: 100%; /* Genişlik %100 */
+    margin-bottom: 10px; /* Alt boşluk */
+}
+
+@media (max-width: 800px) {
+    .header {
+        height: 70px;
+        padding: 0 15px;
+    }
+
+    .search-bar {
+        max-width: 360px;
+        padding: 8px;
+    }
+
+    .header-buttons button {
+        font-size: 11px;
+        padding: 8px 16px;
+    }
+
+    .container2 {
+        width: 80%;
+    }
+
+    .logo {
+        font-size: 24px;
+    }
+
+    .logo-icon {
+        width: 45px;
+        height: 45px;
+    }
+}
+
+
+
+/* Logo */
+.logo {
+    color: #b9bcfb7d;
+    font-size: 26px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+}
+
+/* Logo İkon */
+.logo-icon {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+/* Header (Üst Kısım) */
+.header {
+    /* Genişlik */
+    width: 100%;
+    /* Yükseklik */
+    height: 80px;
+    /* Arka plan rengi */
+    background: linear-gradient(80deg, #2F373E 20%, #273037 60%) !important;
+    /* Flexbox kullanımı */
+    display: flex;
+    /* Dikey yönde hizalama */
+    align-items: center;
+    /* Yatay yönde boşluk bırakma */
+    justify-content: space-between;
+    /* Padding */
+    padding: 0 20px;
+    /* Gölge efekti */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Header'ın sabitlenmesi */
+    position: fixed;
+    /* Header'ın üst kısımda yerleşmesi */
+    top: 0;
+    /* Header'ın sol ve sağ taraflara genişlemesi */
+    left: 0;
+    right: 0;
+    /* Z-index (katman sırası) */
+    z-index: 1000;
+}
+
+
+/* Arama Çubuğu */
+.search-bar {
+    /* Flexbox kullanımı */
+    display: flex;
+    /* Dikey yönde hizalama */
+    align-items: center;
+    /* Arka plan rengi */
+    background-color: #3B4752;
+    /* Köşe yuvarlatma */
+    border-radius: 8px;
+    /* Padding */
+    padding: 10px;
+    /* Genişlik */
+    width: 100%;
+    /* Maksimum genişlik */
+    max-width: 440px;
+}
+
+/* Arama Çubuğu İnput Alanı */
+.search-bar input {
+    /* Genişlik */
+    width: 100%;
+    /* Arka plan rengi (transparent) */
+    background: none;
+    /* Sınır */
+    border: none;
+    /* Font rengi */
+    color: #858EAD;
+    /* Font boyutu */
+    font-size: 14px;
+}
+
+
+
+
+
+/* Header Düğmeleri */
+.header-buttons button {
+    /* Arka plan rengi (transparent) */
+    background: none;
+    /* Sınır */
+    border: none;
+    /* Font rengi */
+    color: rgba(255, 255, 255, 0.81);
+    /* Font boyutu */
+    font-size: 12px;
+    /* Font ailesi */
+    font-family: 'Roboto', sans-serif;
+    /* Font ağırlığı */
+    font-weight: 900;
+    /* Padding */
+    padding: 10px 20px;
+    /* Köşe yuvarlatma */
+    border-radius: 5px;
+    /* İmleç */
+    cursor: pointer;
+}
+
+/* Kayıt Ol Düğmesi */
+.header-buttons .register-button {
+    /* Arka plan rengi */
+    background-color: #4589fe;
+    /* Font rengi */
+    color: white;
+}

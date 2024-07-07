@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Post</title>
+    <link rel="stylesheet" href="/static/view.css">
+    <link rel="stylesheet" href="/static/button.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://use.fontawesome.com/fe459689b4.js"></script>
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+        }
+        .modal-content, .caption {
+            animation-name: zoom;
+            animation-duration: 0.6s;
+        }
+        @keyframes zoom {
+            from {transform: scale(0)}
+            to {transform: scale(1)}
+        }
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .comment-section {
+            display: none;
+        }
+        .comment-textarea {
+            width: 100%;
+            height: 100px;
+        }
+        .comment-buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        .vote-btn, .like-button, .dislike-button {
+            cursor: pointer;
+            outline: 0;
+            color: #AAA;
+            border-radius: 50%;
+            border: 2px solid #AAA;
+            background-color: transparent;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s, border-color 0.3s, transform 0.3s;
+        }
+        .vote-btn:focus, .like-button:focus, .dislike-button:focus {
+            outline: none;
+        }
+        .vote-btn:hover, .like-button:hover, .dislike-button:hover {
+            color: #555;
+            border-color: #555;
+            transform: scale(1.1);
+        }
+        .green {
+            color: green;
+            border-color: green;
+        }
+        .red {
+            color: red;
+            border-color: red;
+        }
+        .green:hover {
+            color: #0f0;
+            border-color: #0f0;
+        }
+        .red:hover {
+            color: #f00;
+            border-color: #f00;
+        }
+        .post-votes {
+            display: flex;
+            align-items: center;
+        }
+        .post-votes button {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <div id="particles-js"></div>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="logo">
+                <span class="logo-divider"></span> <img src="/static/images/logo.png" alt="Home" class="logo-icon">
+                mindmerge
+            </a>
+            <button type="button" class="back-button" onclick="window.location.href='/profile';">
+                <img src="/static/images/back.svg" alt="Back" style="width: 24px; height: 24px;">
+              </button>
+            <div class="search-bar">
+                <input type="text" placeholder="Type here to search...">
+                <div class="search-icon"></div>
+            </div>
+            <div class="header-buttons">
+                {{if .LoggedIn}}
+                <form action="/profile" method="get" style="display:inline;">
+                    <button type="submit" class="profile-button">Profile</button>
+                </form>
+                <form action="/upload" method="get" style="display:inline;">
+                    <button type="submit" class="create-button">Create</button>
+                </form>
+                <form action="/logout" method="post" style="display:inline;">
+                    <button type="submit" class="logout-button">Log Out</button>
+                </form>
+                {{else}}
+                <form action="/register" method="get" style="display:inline;">
+                    <button type="submit" class="register-button">Register</button>
+                </form>
+                <form action="/login" method="get" style="display:inline;">
+                    <button type="submit" class="login-button">Login</button>
+                </form>
+                {{end}}
+            </div> 
+        </div>
+        <div class="content-wrapper">
+            <div class="content">
+                <div class="sidebar">
+                    <div class="menu">
+                        <div class="menu-item">
+                            <a href="/movies"><img class="menu-icon" src="/static/images/movie-icon.png" alt="Movies"></a>
+                            <a href="/movies"><div class="menu-text">Movies</div></a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="/turkish"><img class="menu-icon" src="/static/images/turkish-icon.png" alt="Turkish (language)"></a>
+                            <a href="/turkish"><div class="menu-text">Sport</div></a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="/science"><img class="menu-icon" src="/static/images/science-icon.png" alt="Science"></a>
+                            <a href="/science"><div class="menu-text">Science</div></a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="/food"><img class="menu-icon" src="/static/images/food-icon.png" alt="Food"></a>
+                            <a href="/food"><div class="menu-text">Food</div></a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="/technology"><img class="menu-icon" src="/static/images/technology-icon.png" alt="Technology"></a>
+                            <a href="/technology"><div class="menu-text">Technology</div></a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="/health"><img class="menu-icon" src="/static/images/health-icon.png" alt="Health"></a>
+                            <a href="/health"><div class="menu-text">Health</div></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="main-content">
+                    <h2 class="custom-h2">{{.Title}}</h2>
+                    <div class="post">
+                        <img id="postImage" src="{{.Image}}" alt="{{.Title}}" class="post-image">
+                        <div class="post-details">
+                            <div class="post-content">
+                                {{.Content}}
+                            </div>
+                            
+                            <div class="post-author">
+                                <a href="/userprofile?username={{.AuthorName}}">
+                                    <img class="author-avatar" src="{{if .AuthorIcon.Valid}}{{.AuthorIcon.String}}{{else}}/static/images/vector-1.png{{end}}" alt="{{.AuthorName}}">
+                                </a>                                                           
+                                <div class="author-details">
+                                    <a href="/userprofile?username={{.AuthorName}}">
+                                        <div class="author-name">{{.AuthorName}}</div>
+                                    </a>
+                                    <div class="author-time">{{.FormattedCreatedAt}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="post-stats">
+                            <div class="post-votes">
+                                <form id="vote-form" action="/vote" method="POST">
+                                    <input type="hidden" name="post_id" value="{{.PostID}}">
+                                    <div class="vote-buttons">
+                                        <button type="button" class="vote-btn" id="green"><i class="fa fa-thumbs-up fa-lg" aria-hidden="true"></i></button>
+                                         <p>Likes: <span id="like-count">{{.Likes}}</span></p>
+                                        <button type="button" class="vote-btn" id="red"><i class="fa fa-thumbs-down fa-lg" aria-hidden="true"></i></button>
+                                         <p>Dislikes: <span id="dislike-count">{{.Dislikes}}</span></p>
+                                    </div>
+                                </form>
+                                
+                            </div>
+                        </div>
+                        <div class="comment-section-wrapper">
+                            <button id="show-comment-section" class="comment-toggle-button">Comment</button>
+                            <form id="comment-form" action="/submit_comment" method="POST">
+                                <input type="hidden" name="post_id" value="{{.PostID}}">
+                                <div class="comment-section">
+                                    <textarea id="comment-text" name="comment" class="comment-textarea" placeholder="Write your comment here..."></textarea>
+                                    <div class="comment-buttons">
+                                        <button type="button" class="cancel-button">Cancel</button>
+                                        <button type="submit" class="comment-submit-button">Send</button>
+                                    </div>
+                                    <p id="error-message" style="color:red; display:none;">This part cannot be left blank!</p>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="comments">
+                            <h3>Comments</h3>
+                            {{range .Comments}}
+                            <div class="comment" data-comment-id="{{.ID}}">
+                                <p><strong>{{.AuthorName}}:</strong> {{.Content}}</p>
+                                <div class="comment-votes">
+                                    <button type="button" class="like-button" id="green"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
+                                    <span class="like-count">{{.Likes}}</span>
+                                    <button type="button" class="dislike-button" id="red"><i class="fa fa-thumbs-down" aria-hidden="true"></i></button>
+                                    <span class="dislike-count">{{.Dislikes}}</span>
+                                    <!-- {{if .CanDelete}}
+                                    <form action="/deleteComment" method="post" style="display: inline;">
+                                        <input type="hidden" name="comment_id" value="{{.ID}}">
+                                        <button type="submit" class="delete-button" onclick="return confirm('Bu yorumu silmek istediğinize emin misiniz?');">Delete</button>
+                                    </form>
+                                    {{end}} -->
+                                    {{if .CanDelete}}
+                                    <button onclick="deleteComment('{{.ID}}');">Delete</button>
+                                    {{end}}
+                                </div>
+                            </div>
+                            {{else}}
+                            <p>No comments yet</p>
+                            {{end}}
+                        </div>
+                        <div class="comment-form">
+                            {{if .CommentErrorMsg}}
+                            <p style="color:red;">{{.CommentErrorMsg}}</p>
+                            {{end}}
+                        </div>
+                    </div>
+                </div>
+                
+                
+                
+                
+                
+            </div>
+            <div class="right-sidebar">
+                <video src=""></video>
+            </div>
+        </div>
+    </div>
+
+    <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="img01">
+        <div id="caption"></div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Gönderi için oy kullanma işlemleri
+            $('#green').click(function() {
+                vote(1);
+            });
+
+            $('#red').click(function() {
+                vote(-1);
+            });
+
+            function vote(value) {
+                $.ajax({
+                    url: '/vote',
+                    type: 'POST',
+                    data: {
+                        post_id: $('input[name="post_id"]').val(),
+                        vote: value
+                    },
+                    success: function(response) {
+                        $('#like-count').text(response.likes);
+                        $('#dislike-count').text(response.dislikes);
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 403) {
+                            window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
+                        }
+                    }
+                });
+            }
+
+            // Yorumlar için oy kullanma işlemleri
+            $('.comments').on('click', '.like-button', function() {
+                const commentID = $(this).closest('.comment').data('comment-id');
+                commentVote(commentID, 1, $(this));
+            });
+
+            $('.comments').on('click', '.dislike-button', function() {
+                const commentID = $(this).closest('.comment').data('comment-id');
+                commentVote(commentID, -1, $(this));
+            });
+
+            function commentVote(commentID, value, button) {
+                $.ajax({
+                    url: '/vote_comment',
+                    type: 'POST',
+                    data: {
+                        comment_id: commentID,
+                        vote: value
+                    },
+                    success: function(response) {
+                        button.siblings('.like-count').text(response.likes);
+                        button.siblings('.dislike-count').text(response.dislikes);
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 403) {
+                            window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
+                        }
+                    }
+                });
+            }
+
+            // Yorum yapma ve iptal etme işlemleri
+            $('#show-comment-section').click(function() {
+                $('.comment-section').show();
+                $(this).hide();
+            });
+
+            $('.cancel-button').click(function() {
+                $('.comment-section').hide();
+                $('#show-comment-section').show();
+            });
+
+            $('#comment-form').submit(function(event) {
+                event.preventDefault(); // Formun varsayılan gönderimini engelle
+
+                const commentText = $('#comment-text').val().trim();
+                if (!commentText) {
+                    $('#error-message').show();
+                    return;
+                }
+
+                $('#error-message').hide();
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        if (response.success) {
+                            $('.comments').empty();
+                            response.comments.forEach(comment => {
+                                $('.comments').append(`<div class="comment"><p><strong>${comment.AuthorName}:</strong> ${comment.Content}</p></div>`);
+                            });
+                            $('#comment-text').val('');
+                            $('.comment-section').hide();
+                            $('#show-comment-section').show();
+                            location.reload();
+                        } else {
+                            window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
+                        }
+                    },
+                    error: function(xhr) {
+                        // Hata işleme
+                        if (xhr.status === 403) {
+                            window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
+                        } else {
+                            location.reload();
+                        }
+                    }
+                });
+            });
+
+            // Like and Dislike button işlemleri
+            const likeButton = document.getElementById('green');
+            const dislikeButton = document.getElementById('red');
+            const likeCount = document.getElementById('like-count');
+            const dislikeCount = document.getElementById('dislike-count');
+            const postId = document.querySelector('input[name="post_id"]').value;
+
+            likeButton.addEventListener('click', () => {
+                if (dislikeButton.classList.contains('red')) {
+                    dislikeButton.classList.remove('red');
+                }
+                likeButton.classList.toggle('green');
+                updateVote(postId, likeButton.classList.contains('green') ? 1 : 0);
+            });
+
+            dislikeButton.addEventListener('click', () => {
+                if (likeButton.classList.contains('green')) {
+                    likeButton.classList.remove('green');
+                }
+                dislikeButton.classList.toggle('red');
+                updateVote(postId, dislikeButton.classList.contains('red') ? -1 : 0);
+            });
+
+            function updateVote(postId, voteValue) {
+                fetch('/vote', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ post_id: postId, vote: voteValue })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    likeCount.textContent = data.likes;
+                    dislikeCount.textContent = data.dislikes;
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        });
+
+        // Resim için modal açma işlemleri
+        var modal = document.getElementById("myModal");
+        var img = document.getElementById("postImage");
+        var modalImg = document.getElementById("img01");
+        var captionText = document.getElementById("caption");
+
+        img.onclick = function(){
+            modal.style.display = "block";
+            modalImg.src = this.src;
+            captionText.innerHTML = this.alt;
+        }
+
+        var span = document.getElementsByClassName("close")[0];
+
+        span.onclick = function() { 
+            modal.style.display = "none";
+        }
+
+        // Modal dışına tıklayınca kapatma işlemi
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.back-button').on('click', function() {
+                var referrer = document.referrer;
+                if (referrer.includes('/profile')) {
+                    window.location.href = '/profile'; // Profil sayfasından gelindiyse, profile yönlendir
+                } else {
+                    window.location.href = '/'; // Diğer durumlarda ana sayfaya yönlendir
+                }
+            });
+        });
+    </script>
+    <script>
+        function deleteComment(commentID) {
+            if (confirm('Bu yorumu silmek istediğinize emin misiniz?')) {
+                $.ajax({
+                    url: '/deleteComment',
+                    type: 'POST',
+                    data: { comment_id: commentID },
+                    success: function(response) {
+                    // Yorum başarıyla silindiyse sayfayı güncelle
+                        alert('Yorum başarıyla silindi.');
+                        location.reload(); // Burada tüm sayfayı yeniden yüklemek yerine sadece yorum listesini güncelleyebilirsiniz.
+                    },
+                    error: function(xhr) {
+                    // Hata mesajı göster
+                        alert('Yorum silinirken bir hata oluştu: ' + xhr.responseText);
+                    }
+                });
+            }
+        }
+        particlesJS('particles-js', {
+        "particles": {
+            "number": {
+                "value": 80,
+                "density": {
+                    "enable": true,
+                    "value_area": 800
+                }
+            },
+            "color": {
+                "value": "#ffffff"
+            },
+            "shape": {
+                "type": "circle",
+                "stroke": {
+                    "width": 0,
+                    "color": "#000000"
+                },
+                "polygon": {
+                    "nb_sides": 5
+                },
+                "image": {
+                    "src": "img/github.svg",
+                    "width": 100,
+                    "height": 100
+                }
+            },
+            "opacity": {
+                "value": 0.5,
+                "random": false,
+                "anim": {
+                    "enable": false,
+                    "speed": 1,
+                    "opacity_min": 0.1,
+                    "sync": false
+                }
+            },
+            "size": {
+                "value": 3,
+                "random": true,
+                "anim": {
+                    "enable": false,
+                    "speed": 40,
+                    "size_min": 0.1,
+                    "sync": false
+                }
+            },
+            "line_linked": {
+                "enable": true,
+                "distance": 150,
+                "color": "#ffffff",
+                "opacity": 0.4,
+                "width": 1
+            },
+            "move": {
+                "enable": true,
+                "speed": 2,
+                "direction": "none",
+                "random": false,
+                "straight": false,
+                "out_mode": "out",
+                "bounce": false,
+                "attract": {
+                    "enable": false,
+                    "rotateX": 600,
+                    "rotateY": 1200
+                }
+            }
+        },
+        "interactivity": {
+            "detect_on": "canvas",
+            "events": {
+                "onhover": {
+                    "enable": true,
+                    "mode": "repulse"
+                },
+                "onclick": {
+                    "enable": true,
+                    "mode": "push"
+                },
+                "resize": true
+            },
+            "modes": {
+                "grab": {
+                    "distance": 400,
+                    "line_linked": {
+                        "opacity": 1
+                    }
+                },
+                "bubble": {
+                    "distance": 400,
+                    "size": 40,
+                    "duration": 2,
+                    "opacity": 8,
+                    "speed": 3
+                },
+                "repulse": {
+                    "distance": 200,
+                    "duration": 0.4
+                },
+                "push": {
+                    "particles_nb": 4
+                },
+                "remove": {
+                    "particles_nb": 2
+                }
+            }
+        },
+        "retina_detect": true
+    });
+    </script>    
+</body>
+</html>

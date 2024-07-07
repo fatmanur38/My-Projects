@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sport Posts</title>
+    <link rel="stylesheet" href="/static/navbar.css">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <div id="particles-js"></div>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="logo">
+                <span class="logo-divider"></span> <img src="/static/images/logo.png" alt="Home" class="logo-icon">
+                mindmerge
+            </a>
+            <div class="search-bar">
+                <input type="text" placeholder="Type here to search...">
+                <div class="search-icon"></div>
+            </div>
+            <div class="header-buttons">
+                {{if .LoggedIn}}
+                <form action="/profile" method="get" style="display:inline;">
+                    <button type="submit" class="profile-button">Profile</button>
+                </form>
+                <form action="/upload" method="get" style="display:inline;">
+                    <button type="submit" class="create-button">Create</button>
+                </form>
+                <form action="/logout" method="post" style="display:inline;">
+                    <button type="submit" class="logout-button">Log Out</button>
+                </form>
+                {{else}}
+                <form action="/register" method="get" style="display:inline;">
+                    <button type="submit" class="register-button">Register</button>
+                </form>
+                <form action="/login" method="get" style="display:inline;">
+                    <button type="submit" class="login-button">Login</button>
+                </form>
+                {{end}}
+            </div> 
+        </div>
+        <div class="content-wrapper">
+            <div class="sidebar">
+                <div class="menu">
+                    <div class="menu-item">
+                        <a href="/movies"><img class="menu-icon" src="/static/images/movie-icon.png" alt="Movies"></a>
+                        <a href="/movies"><div class="menu-text">Movies</div></a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="/turkish"><img class="menu-icon" src="/static/images/turkish-icon.png" alt="Turkish (language)"></a>
+                        <a href="/turkish"><div class="menu-text">Sport</div></a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="/science"><img class="menu-icon" src="/static/images/science-icon.png" alt="Science"></a>
+                        <a href="/science"><div class="menu-text">Science</div></a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="/food"><img class="menu-icon" src="/static/images/food-icon.png" alt="Food"></a>
+                        <a href="/food"><div class="menu-text">Food</div></a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="/technology"><img class="menu-icon" src="/static/images/technology-icon.png" alt="Technology"></a>
+                        <a href="/technology"><div class="menu-text">Technology</div></a>
+                    </div>
+                    <div class="menu-item">
+                        <a href="/health"><img class="menu-icon" src="/static/images/health-icon.png" alt="Health"></a>
+                        <a href="/health"><div class="menu-text">Health</div></a>
+                    </div>
+                </div>
+            </div>
+            <div class="main-content">
+                <h2>Turkish Posts</h2>
+                <div class="sort-buttons">
+                    <a href="/{{.Category}}?sort=newest" class="sort-button {{if eq .SortOrder "newest"}}active{{end}}">Sort by Newest</a>
+                    <a href="/{{.Category}}?sort=oldest" class="sort-button {{if eq .SortOrder "oldest"}}active{{end}}">Sort by Oldest</a>
+                    <a href="/{{.Category}}?sort=most_liked" class="sort-button {{if eq .SortOrder "most_liked"}}active{{end}}">Sort by Most Liked</a>
+                    <a href="/{{.Category}}?sort=least_liked" class="sort-button {{if eq .SortOrder "least_liked"}}active{{end}}">Sort by Least Liked</a>
+                </div>
+                {{range .Posts}}
+                <div class="post" data-post-id="{{.ID}}">
+                    <img class="post-image" src="{{.ImageURL}}" alt="{{.Title}}">
+                    <div class="post-details">
+                        <div class="post-title">{{.Title}}</div>
+                        <div class="post-tags">
+                            <span class="post-tag">turkish</span>
+                        </div>
+                        <div class="post-author">
+                            <img class="author-avatar" src="{{if .AuthorIcon.Valid}}{{.AuthorIcon.String}}{{else}}/static/images/vector-1.png{{end}}" alt="Author Avatar">
+                            <div class="author-details">
+                                <div class="author-name">{{.AuthorName}}</div>
+                                <div class="author-time">{{.FormattedCreatedAt}}</div>
+                            </div>
+                        </div>
+                        <div class="post-stats">
+                            <div class="post-views">
+                                <img src="/static/images/view.png" class="view-icon">
+                                {{.ViewCount}} Views
+                            </div>
+                            <div class="post-likes">
+                                <img src="/static/images/like.png" class="like-icon">
+                                {{.Likes}} Likes
+                            </div>
+                            <div class="post-dislikes">
+                                <img src="/static/images/dislike.png" class="dislike-icon">
+                                {{.Dislikes}} Dislikes
+                            </div>
+                            <div class="post-comments">
+                                <img src="/static/images/comment.png" class="comment-icon" alt="Comments" style="margin-right: 5px;">
+                                {{.CommentCount}} Comments                          
+                            </div>                            
+                        </div>  
+                    </div>
+                </div>
+                {{end}}
+            </div>
+            <div class="right-sidebar">
+                <h4 style="color: aliceblue;">Popular</h4>
+                <div class="empty-menu">
+                    <iframe width="250" height="100" src="https://www.youtube.com/embed/G4swBHJfR-s?start=37" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('.post').forEach(function(post) {
+                post.addEventListener('click', function() {
+                    var postId = this.getAttribute('data-post-id');
+                    window.location.href = "/view_post?post_id=" + postId;
+                });
+            });
+        });
+        particlesJS('particles-js', {
+        "particles": {
+            "number": {
+                "value": 80,
+                "density": {
+                    "enable": true,
+                    "value_area": 800
+                }
+            },
+            "color": {
+                "value": "#ffffff"
+            },
+            "shape": {
+                "type": "circle",
+                "stroke": {
+                    "width": 0,
+                    "color": "#000000"
+                },
+                "polygon": {
+                    "nb_sides": 5
+                },
+                "image": {
+                    "src": "img/github.svg",
+                    "width": 100,
+                    "height": 100
+                }
+            },
+            "opacity": {
+                "value": 0.5,
+                "random": false,
+                "anim": {
+                    "enable": false,
+                    "speed": 1,
+                    "opacity_min": 0.1,
+                    "sync": false
+                }
+            },
+            "size": {
+                "value": 3,
+                "random": true,
+                "anim": {
+                    "enable": false,
+                    "speed": 40,
+                    "size_min": 0.1,
+                    "sync": false
+                }
+            },
+            "line_linked": {
+                "enable": true,
+                "distance": 150,
+                "color": "#ffffff",
+                "opacity": 0.4,
+                "width": 1
+            },
+            "move": {
+                "enable": true,
+                "speed": 2,
+                "direction": "none",
+                "random": false,
+                "straight": false,
+                "out_mode": "out",
+                "bounce": false,
+                "attract": {
+                    "enable": false,
+                    "rotateX": 600,
+                    "rotateY": 1200
+                }
+            }
+        },
+        "interactivity": {
+            "detect_on": "canvas",
+            "events": {
+                "onhover": {
+                    "enable": true,
+                    "mode": "repulse"
+                },
+                "onclick": {
+                    "enable": true,
+                    "mode": "push"
+                },
+                "resize": true
+            },
+            "modes": {
+                "grab": {
+                    "distance": 400,
+                    "line_linked": {
+                        "opacity": 1
+                    }
+                },
+                "bubble": {
+                    "distance": 400,
+                    "size": 40,
+                    "duration": 2,
+                    "opacity": 8,
+                    "speed": 3
+                },
+                "repulse": {
+                    "distance": 200,
+                    "duration": 0.4
+                },
+                "push": {
+                    "particles_nb": 4
+                },
+                "remove": {
+                    "particles_nb": 2
+                }
+            }
+        },
+        "retina_detect": true
+    });
+    </script>
+</body>
+</html>

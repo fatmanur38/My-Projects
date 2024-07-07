@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="/static/edit.css">
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <div id="particles-js"></div>
+    <div class="header">
+         <a href="/" class="logo">
+                <span class="logo-divider"></span> <img src="/static/images/logo.png" alt="Home" class="logo-icon">
+                mindmerge
+            </a>
+        <div class="search-bar">
+            <input type="text" placeholder="Type here to search...">
+            <div class="search-icon"></div>
+            
+        </div>
+        <div class="header-buttons">
+            <!-- Create butonu her zaman görünsün, ancak tıklanınca diğerleri görünsün -->
+            <form action="/profile" method="get" style="display:inline;">
+                <button type="submit" class="profile-button">Profile</button>
+            </form>
+            <form action="/upload" method="get" style="display:inline;">
+                  <button type="submit" class="create-button">Create</button>
+            </form>
+            <form action="/logout" method="post" style="display:inline;">
+                <button type="submit" class="logout-button">Log Out</button>
+            </form>
+            <!-- Başlangıçta gizli, Create'e basılınca görünecek -->
+            <div id="userControls" style="display: none;">
+                <form action="/create" method="get" style="display:inline;">
+                    <button type="submit" class="create-button" id="createButton">Create</button>
+                </form>
+            </div>
+        </div>
+      </div>
+    <div class="profile">
+        <div class="profile-wrapper">
+            <form action="/edit" method="post" enctype="multipart/form-data">
+                <div class="profile-edit">
+                    <!-- Input fields -->
+                    <div class="user-info">
+                        <!-- Image preview updated here -->
+                        <img id="user-icon" class="user-icon" src="{{if .UserIcon}}{{.UserIcon}}{{else}}/static/images/vector-1.png{{end}}" />
+                    </div>                    
+                    <div class="txt-wrapper">Name</div>
+                    <input type="text" name="name" placeholder="Enter your name" required class="rect-2" value="{{.Name}}">
+                    <div class="diiv">Email</div>
+                    <input type="email" name="email" placeholder="Enter your email" required class="rect-3" value="{{.Email}}">
+                    <div class="txt-wrapper-30">Username</div>
+                    <input type="text" name="username" placeholder="Enter your username" required class="rect-4" value="{{.Username}}">
+                    <div class="txt-wrapper-3">About</div>
+                    <textarea name="about" class="input-bg" placeholder="Tell us something about yourself..." rows="4" cols="50">{{.About}}</textarea>
+                    <!-- <div class="txt-wrapper-8">Change password</div> -->
+                    <button type="button" class="txt-wrapper-8" onclick="window.location.href='/password_change';">Change Password</button>
+                    <label for="file" class="upload-label"></label>
+                    <input type="file" id="file" name="file" style="display:none;" onchange="previewImage(event)">
+                    <button type="button" class="ellips" onclick="document.getElementById('file').click();"></button>
+                    <button type="submit" class="button1">
+                        <div class="txt-wrapper-10">Submit</div>
+                    </button>
+                    <img class="cont-cont" src="/static/images/content-22-content-edit-pen-write-tool-icon-1.svg" />
+                </div>
+            </form>
+            <button type="button" class="back-button" onclick="window.location.href='/profile';">
+                <img src="/static/images/back.svg" alt="Geri Dön" style="width: 24px; height: 24px;">
+            </button>
+        </div>
+    </div>
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var output = document.getElementById('user-icon');
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+        particlesJS('particles-js', {
+        "particles": {
+            "number": {
+                "value": 80,
+                "density": {
+                    "enable": true,
+                    "value_area": 800
+                }
+            },
+            "color": {
+                "value": "#ffffff"
+            },
+            "shape": {
+                "type": "circle",
+                "stroke": {
+                    "width": 0,
+                    "color": "#000000"
+                },
+                "polygon": {
+                    "nb_sides": 5
+                },
+                "image": {
+                    "src": "img/github.svg",
+                    "width": 100,
+                    "height": 100
+                }
+            },
+            "opacity": {
+                "value": 0.5,
+                "random": false,
+                "anim": {
+                    "enable": false,
+                    "speed": 1,
+                    "opacity_min": 0.1,
+                    "sync": false
+                }
+            },
+            "size": {
+                "value": 3,
+                "random": true,
+                "anim": {
+                    "enable": false,
+                    "speed": 40,
+                    "size_min": 0.1,
+                    "sync": false
+                }
+            },
+            "line_linked": {
+                "enable": true,
+                "distance": 150,
+                "color": "#ffffff",
+                "opacity": 0.4,
+                "width": 1
+            },
+            "move": {
+                "enable": true,
+                "speed": 2,
+                "direction": "none",
+                "random": false,
+                "straight": false,
+                "out_mode": "out",
+                "bounce": false,
+                "attract": {
+                    "enable": false,
+                    "rotateX": 600,
+                    "rotateY": 1200
+                }
+            }
+        },
+        "interactivity": {
+            "detect_on": "canvas",
+            "events": {
+                "onhover": {
+                    "enable": true,
+                    "mode": "repulse"
+                },
+                "onclick": {
+                    "enable": true,
+                    "mode": "push"
+                },
+                "resize": true
+            },
+            "modes": {
+                "grab": {
+                    "distance": 400,
+                    "line_linked": {
+                        "opacity": 1
+                    }
+                },
+                "bubble": {
+                    "distance": 400,
+                    "size": 40,
+                    "duration": 2,
+                    "opacity": 8,
+                    "speed": 3
+                },
+                "repulse": {
+                    "distance": 200,
+                    "duration": 0.4
+                },
+                "push": {
+                    "particles_nb": 4
+                },
+                "remove": {
+                    "particles_nb": 2
+                }
+            }
+        },
+        "retina_detect": true
+    });
+    </script>
+</body>
+</html>

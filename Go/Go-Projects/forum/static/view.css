@@ -1,0 +1,532 @@
+/* Genel Stil Ayarları */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.back-button {
+    position: absolute;
+    z-index: 1000;
+    background-color: transparent;
+    color: white;
+    padding: 0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    top: 120px;
+    left: 330px;
+}
+
+.back-button img {
+    width: 24px;
+    height: 24px;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+body {
+    background-color: #3B4752;
+    font-family: 'Source Sans Pro', sans-serif;
+    color: #F7F7F7;
+    position: relative;
+}
+
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 80px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.header {
+    width: 100%;
+    height: 80px;
+    background: linear-gradient(80deg, #2F373E 20%, #273037 60%) !important;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #3B4752;
+    border-radius: 8px;
+    padding: 10px;
+    width: 100%;
+    max-width: 440px;
+}
+
+.search-bar input {
+    width: 100%;
+    background: none;
+    border: none;
+    color: #858EAD;
+    font-size: 14px;
+}
+
+.header-buttons button {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.81);
+    font-size: 12px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 900;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.header-buttons .register-button {
+    background-color: #4589fe;
+    color: white;
+}
+
+.content-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-top: 10px;
+    max-width: 1400px;
+}
+
+.sidebar, .right-sidebar {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: auto;
+    position: fixed;
+    top: 100px;
+}
+
+.sidebar {
+    left: 60px;
+}
+
+.right-sidebar {
+    right: 60px;
+}
+
+.menu, .empty-menu {
+    background-color: #262d34bc;
+    border-radius: 16px;
+    padding: 20px;
+    height: 100%;
+    overflow: auto;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background-color: #262d34bc;
+    margin: 5px 0;
+    border-radius: 8px;
+}
+
+.menu-item:hover {
+    background-color: #3B4752;
+}
+
+.menu-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.menu-text {
+    color: #FFF;
+    font-size: 16px;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 300px;
+    max-width: 800px;
+    margin: 0 300px;
+    padding: 0 20px;
+}
+
+.post {
+    background-color: #262d34bc;
+    border-radius: 16px;
+    display: flex;
+    gap: 20px;
+    padding: 10px;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.3s;
+    width: 130%;
+    margin-left: -10%;
+    
+    position: relative;
+}
+
+.post:hover {
+    transform: scale(1.05);
+}
+
+.post-image {
+    width: 600px; /* Sabit genişlik */
+    height: 300px; /* Sabit yükseklik */
+    object-fit: cover; /* Görselin boyutlandırılması */
+    border-radius: 16px; /* Köşe yuvarlatma */
+    border: 1px solid rgba(43, 0, 212, 0.10); /* Sınır */
+    box-shadow: 0px 2px 6px rgba(43, 0, 212, 0.06); /* Gölge efekti */
+}
+
+.post-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.post-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #F7F7F7;
+    line-height: 26px;
+    word-wrap: break-word;
+}
+
+.post-tags {
+    display: flex;
+    gap: 10px;
+}
+
+.post-tag {
+    background-color: #2C353D;
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 10px;
+    color: #C5D0E6;
+    font-weight: 600;
+}
+
+/* post-author sınıfının genişliği belirlendi */
+.post-author {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: auto; /* Genişlik belirlendi */
+    flex: 1; /* Boşluğu kaplaması sağlandı */
+}
+.custom-h2 {
+    position: absolute; /* Kesin konumlandırma */
+    top: 20px; /* Üstten boşluk ayarı */
+    left: 20px; /* Soldan boşluk ayarı */
+    margin: 0; /* Varsayılan margin değerini sıfırla */
+    padding: 0; /* Varsayılan padding değerini sıfırla */
+    color: white; /* Yazı rengi */
+    font-size: 24px; /* Yazı boyutu */
+    z-index: 100; /* Öne çıkması için z-index ayarı */
+}
+.author-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #F0F1FE;
+}
+
+.author-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.author-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #F4F6F8;
+    line-height: 22px;
+    word-wrap: break-word;
+}
+
+.author-time {
+    font-size: 10px;
+    color: #C5D0E6;
+    font-weight: 400;
+    line-height: 16px;
+    word-wrap: break-word;
+}
+
+.post-content {
+    background-color: #3B4752;
+    border-radius: 16px;
+    padding: 10px;
+    width: 100%;
+    text-align: center;
+    color: #F7F7F7;
+    white-space: pre-wrap; /* Bu satır, içerik genişledikçe elemanın genişlemesini sağlar */
+    word-wrap: break-word; /* Bu satır, çok uzun kelimelerin taşmasını engeller */
+    max-width: 100%; /* Bu satır, genişliğin belirli bir sınırı aşmamasını sağlar */
+}
+
+.post-stats {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.vote-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.post-votes {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto; /* post-author sınıfının sağına konumlandırıldı */
+    margin-top: -90px; /* Yukarı kaydırmak için negatif margin eklendi */
+}
+.post-votes button {
+    background: none;
+    border: none;
+    color: #AAA;
+    border-radius: 50%;
+    border: 2px solid #AAA;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: color 0.3s, border-color 0.3s, transform 0.3s;
+}
+
+.post-votes button:hover {
+    color: #555;
+    border-color: #555;
+    transform: scale(1.1);
+}
+
+.post-votes .green {
+    color: green;
+    border-color: green;
+}
+
+.post-votes .red {
+    color: red;
+    border-color: red;
+}
+
+.comment-section-wrapper {
+    width: 100%;
+}
+
+.comment-toggle-button {
+    background-color: #4589fe;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.comment-toggle-button:hover {
+    background-color: #0d45a5;
+}
+
+.comment-section {
+    display: none;
+    background: #262D34;
+    padding: 20px;
+    border-radius: 16px;
+    margin-top: 10px;
+}
+
+.comment-section textarea {
+    width: 100%;
+    background: #F4EFEF;
+    border: 2px solid rgba(59, 71, 82, 0.60);
+    border-radius: 24px;
+    padding: 10px;
+    font-size: 16px;
+    color: #3B4752;
+    resize: none;
+    outline: none;
+    margin-bottom: 10px;
+}
+
+.comment-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.cancel-button, .comment-submit-button {
+    background: #4589fe;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.35);
+    cursor: pointer;
+}
+
+.cancel-button:hover, .comment-submit-button:hover {
+    background: #0b43a4;
+}
+
+.comments {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.comments h3 {
+    margin-bottom: 10px;
+}
+
+.comment {
+    background-color: #262D34;
+    border-radius: 16px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.comment p {
+    margin: 0;
+}
+
+.comment-votes {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.like-button, .dislike-button {
+    background: none;
+    border: none;
+    color: #AAA;
+    cursor: pointer;
+}
+
+.like-button:hover, .dislike-button:hover {
+    color: #555;
+}
+
+.like-count, .dislike-count {
+    margin-left: 5px;
+    color: #AAA;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .content-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sidebar, .right-sidebar {
+        width: 100%;
+        max-width: 300px;
+        position: relative;
+        top: auto;
+        left: auto;
+        right: auto;
+    }
+
+    .main-content {
+        width: 100%;
+        max-width: 600px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        flex-direction: column;
+        height: auto;
+        padding: 10px;
+    }
+
+    .header-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .search-bar {
+        width: 100%;
+    }
+
+    .content-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sidebar, .right-sidebar {
+        width: 100%;
+        max-width: 100%;
+        position: relative;
+        top: auto;
+        left: auto;
+        right: auto;
+    }
+
+    .main-content {
+        width: 100%;
+        max-width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+}
+/* Logo */
+.logo {
+    color: #b9bcfb7d;
+    font-size: 26px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+}
+
+/* Logo İkon */
+.logo-icon {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+}
+

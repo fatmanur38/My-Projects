@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindmerge - Login</title>
+    <link rel="stylesheet" href="/static/style1.css">
+    <link rel="stylesheet" href="/static/error.css">
+</head>
+<body onload="showLoginForm()">
+    <div class="container">
+        <div class="navbar">
+            <div class="navbar-left">
+                <a href="/" class="logo">mindmerge</a>
+                <div class="divider"></div>
+            </div>
+            <div class="auth-buttons">
+                <div class="button register" onclick="window.location.href='/register'">
+                    <div class="icon">
+                        <div class="icon-part1"></div>
+                        <div class="icon-part2"></div>
+                        <div class="icon-part3"></div>
+                        <div class="icon-part4"></div>
+                        <img src="https://cdn-icons-png.flaticon.com/512/271/271210.png" alt="Register Icon" class="register-icon">
+                    </div>
+                    <div class="text">Register</div>
+                </div>
+                <div class="button login" onclick="showLoginForm()">Login</div>
+            </div>
+        </div>
+        <div id="loginForm" class="form-container">
+            {{if .LoginErrorMsg}}
+            <div class="error">
+                <div class="icon"></div>
+                <div>{{.LoginErrorMsg}}</div>
+            </div>
+            <script>
+                document.getElementById('loginForm').style.display = 'block';
+            </script>
+            {{end}}
+            <form action="/login" method="POST">
+                <h2>Login</h2>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" placeholder="example@example.com" required>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <button type="submit">Sign in</button>
+                <div class="alternative-options">
+                    <span>or continue with</span>
+                    <div class="social-buttons">
+                        <a href="/auth/google/login" class="google">
+                            <img src="https://cdn4.iconfinder.com/data/icons/logos-brands-7/512/google_logo-google_icongoogle-512.png" alt="Google" class="social-icon">
+                        </a>                        
+                        <a href="/auth/github" class="github">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" class="social-icon">
+                        </a>
+                        <a href="/auth/facebook" class="facebook">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_(2019).svg" alt="Facebook" class="social-icon">
+                        </a>
+                    </div>
+                </div>
+                <div class="additional-links">
+                    <span>Don’t have an account yet?</span>
+                    <a href="/register">Register for free</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        function showLoginForm() {
+            document.getElementById('loginForm').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

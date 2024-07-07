@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="/static/profile.css">
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <div id="particles-js"></div>
+    <div class="header">
+        <a href="/" class="logo">
+            <span class="logo-divider"></span> <img src="/static/images/logo.png" alt="Home" class="logo-icon">
+            mindmerge
+        </a>
+        <div class="search-bar">
+            <input type="text" placeholder="Type here to search...">
+            <div class="search-icon"></div>
+        </div>
+        <div class="header-buttons">
+            <form action="/upload" method="get" style="display:inline;">
+                <button type="submit" class="create-button">Create</button>
+            </form>
+            <form action="/logout" method="post" style="display:inline;">
+                <button type="submit" class="logout-button">Log Out</button>
+            </form>
+            <div id="userControls" style="display: none;">
+                <form action="/profile" method="get" style="display:inline;">
+                    <button type="submit" class="profile-button">Profile</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+        <div class="div">
+            <div class="overlap">
+                <div class="group">
+                    <div class="overlap-group">
+                        <img class="vector" src="{{if .UserIcon}}{{.UserIcon}}{{else}}/static/images/vector-1.png{{end}}" />
+                        <div class="flexcontainer">
+                            <p class="text">
+                                <span class="text-wrapper">Username: {{.Username}}<br /></span>
+                            </p>
+                            <p class="text">
+                                <span class="text-wrapper">Email: {{.Email}}<br /></span>
+                            </p>
+                            <p class="text">
+                                <span class="text-wrapper">Name: {{.Name}}<br /></span>
+                            </p>
+                            <p class="text"><span class="text-wrapper">Join Date: {{.CreatedAt}}</span></p>
+                        </div>
+                        <button class="ellipse" onclick="window.location.href='/edit'"></button>
+                    </div>
+                </div>
+                <img class="content-content" src="/static/images/content-22-content-edit-pen-write-tool-icon-1.svg" />
+                <div class="rectangle">
+                    <p class="about-text">{{.About}}</p>
+                </div>
+            </div>
+            <div class="rectangle-2">
+                <!-- class="tab-content" -->
+                <div id="userPosts" class="tab-content">
+                    <!-- Your Posts content goes here -->
+                    <h1>Your Posts</h1>
+                    {{range .Posts}}
+                    <div class="post" data-post-id="{{.ID}}" onclick="window.location.href='/view_post?post_id={{.ID}}'">
+                        <img class="post-image" src="{{.ImageURL}}" alt="{{.Title}}">
+                        <div class="post-details">
+                            <div class="post-title">{{.Title}}</div>
+                            <div class="post-tags">
+                                {{if .Category.Valid}}
+                                <p>{{range split .Category.String ", "}}<span class="post-tag">{{.}}</span>{{end}}</p>
+                                {{else}}
+                                <p>No Categories</p>
+                                {{end}}
+                            </div>
+                            <div class="post-author">
+                                <a href="/userprofile?username={{.AuthorName}}">
+                                    <img class="author-avatar" src="{{if .AuthorIcon.Valid}}{{.AuthorIcon.String}}{{else}}/static/images/vector-1.png{{end}}">
+                                </a>
+                                <div class="author-details">
+                                    <a href="/userprofile?username={{.AuthorName}}">
+                                        <div class="author-name">{{.AuthorName}}</div>
+                                    </a>
+                                    <div class="author-time">{{.FormattedCreatedAt}}</div>
+                                </div>
+                                <div class="post-stats">
+                                    <div class="post-views">
+                                        <img src="/static/images/view.png" class="view-icon">
+                                        {{.ViewCount}} Views
+                                    </div>
+                                    <div class="post-likes">
+                                        <img src="/static/images/like.png" class="like-icon">
+                                        {{.Likes}} Likes
+                                    </div>
+                                    <div class="post-dislikes">
+                                        <img src="/static/images/dislike.png" class="dislike-icon">
+                                        {{.Dislikes}} Dislikes
+                                    </div>
+                                    <div class="post-comments">
+                                        <img src="/static/images/comment.png" class="comment-icon" alt="Comments" style="margin-right: 5px;">
+                                        {{.CommentCount}} Comments
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Post actions (including the delete button) here -->
+                            <div class="post-actions">
+                                <form action="/deletePost" method="post" style="display: inline;">
+                                    <input type="hidden" name="postID" value="{{.ID}}">
+                                    <button type="submit" class="delete-button" onclick="return confirm('Bu gönderiyi silmek istediğinize emin misiniz?');">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {{end}}
+                </div>
+                <div id="userComments" class="tab-content" style="display:none;">
+                    <h1>Your Comments</h1>
+                    {{range .CommentedPosts}}
+                    <div class="post" data-post-id="{{.ID}}" onclick="window.location.href='/view_post?post_id={{.ID}}'">
+                        <img class="post-image" src="{{.ImageURL}}" alt="{{.Title}}">
+                        <div class="post-details">
+                            <div class="post-title">{{.Title}}</div>
+                            <div class="post-tags">
+                                {{if .Category.Valid}}
+                                <p>{{range split .Category.String ", "}}<span class="post-tag">{{.}}</span>{{end}}</p>
+                                {{else}}
+                                <p>No Categories</p>
+                                {{end}}
+                            </div>
+                            <div class="post-author">
+                                <a href="/userprofile?username={{.AuthorName}}">
+                                    <img class="author-avatar" src="{{if .AuthorIcon.Valid}}{{.AuthorIcon.String}}{{else}}/static/images/vector-1.png{{end}}">
+                                </a>
+                                <div class="author-details">
+                                    <a href="/userprofile?username={{.AuthorName}}">
+                                        <div class="author-name">{{.AuthorName}}</div>
+                                    </a>
+                                    <div class="author-time">{{.FormattedCreatedAt}}</div>
+                                </div>
+                                <div class="post-stats">
+                                    <div class="post-views">
+                                        <img src="/static/images/view.png" class="view-icon">
+                                        {{.ViewCount}} Views
+                                    </div>
+                                    <div class="post-likes">
+                                        <img src="/static/images/like.png" class="like-icon">
+                                        {{.Likes}} Likes
+                                    </div>
+                                    <div class="post-dislikes">
+                                        <img src="/static/images/dislike.png" class="dislike-icon">
+                                        {{.Dislikes}} Dislikes
+                                    </div>
+                                    <div class="post-comments">
+                                        <img src="/static/images/comment.png" class="comment-icon" alt="Comments" style="margin-right: 5px;">
+                                        {{.CommentCount}} Comments
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{end}}
+                </div>
+                <div id="likedPosts" class="tab-content" style="display:none;">
+                    <h1>Liked Posts</h1>
+                    {{range .LikedPosts}}
+                    <div class="post" data-post-id="{{.ID}}"onclick="window.location.href='/view_post?post_id={{.ID}}'">
+                        <img class="post-image" src="{{.ImageURL}}" alt="{{.Title}}">
+                        <div class="post-details">
+                            <div class="post-title">{{.Title}}</div>
+                            <div class="post-tags">
+                                {{if .Category.Valid}}
+                                <p>{{range split .Category.String ", "}}<span class="post-tag">{{.}}</span>{{end}}</p>
+                                {{else}}
+                                <p>No Categories</p>
+                                {{end}}
+                            </div>
+                            <div class="post-author">
+                                <a href="/userprofile?username={{.AuthorName}}">
+                                    <img class="author-avatar" src="{{if .AuthorIcon.Valid}}{{.AuthorIcon.String}}{{else}}/static/images/vector-1.png{{end}}">
+                                </a>
+                                <div class="author-details">
+                                    <a href="/userprofile?username={{.AuthorName}}">
+                                        <div class="author-name">{{.AuthorName}}</div>
+                                    </a>
+                                    <div class="author-time">{{.FormattedCreatedAt}}</div>
+                                </div>
+                                <div class="post-stats">
+                                    <div class="post-views">
+                                        <img src="/static/images/view.png" class="view-icon">
+                                        {{.ViewCount}} Views
+                                    </div>
+                                    <div class="post-likes">
+                                        <img src="/static/images/like.png" class="like-icon">
+                                        {{.Likes}} Likes
+                                    </div>
+                                    <div class="post-dislikes">
+                                        <img src="/static/images/dislike.png" class="dislike-icon">
+                                        {{.Dislikes}} Dislikes
+                                    </div>
+                                    <div class="post-comments">
+                                        <img src="/static/images/comment.png" class="comment-icon" alt="Comments" style="margin-right: 5px;">
+                                        {{.CommentCount}} Comments
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{end}}
+                </div>
+                <div id="dislikedPosts" class="tab-content" style="display:none;">
+                    <h1>Disliked Posts</h1>
+                    {{range .DislikedPosts}}
+                    <div class="post" data-post-id="{{.ID}}"onclick="window.location.href='/view_post?post_id={{.ID}}'">
+                        <img class="post-image" src="{{.ImageURL}}" alt="{{.Title}}">
+                        <div class="post-details">
+                            <div class="post-title">{{.Title}}</div>
+                            <div class="post-tags">
+                                {{if .Category.Valid}}
+                                <p>{{range split .Category.String ", "}}<span class="post-tag">{{.}}</span>{{end}}</p>
+                                {{else}}
+                                <p>No Categories</p>
+                                {{end}}
+                            </div>
+                            <div class="post-author">
+                                <a href="/userprofile?username={{.AuthorName}}">
+                                    <img class="author-avatar" src="{{if .AuthorIcon.Valid}}{{.AuthorIcon.String}}{{else}}/static/images/vector-1.png{{end}}">
+                                </a>
+                                <div class="author-details">
+                                    <a href="/userprofile?username={{.AuthorName}}">
+                                        <div class="author-name">{{.AuthorName}}</div>
+                                    </a>
+                                    <div class="author-time">{{.FormattedCreatedAt}}</div>
+                                </div>
+                                <div class="post-stats">
+                                    <div class="post-views">
+                                        <img src="/static/images/view.png" class="view-icon">
+                                        {{.ViewCount}} Views
+                                    </div>
+                                    <div class="post-likes">
+                                        <img src="/static/images/like.png" class="like-icon">
+                                        {{.Likes}} Likes
+                                    </div>
+                                    <div class="post-dislikes">
+                                        <img src="/static/images/dislike.png" class="dislike-icon">
+                                        {{.Dislikes}} Dislikes
+                                    </div>
+                                    <div class="post-comments">
+                                        <img src="/static/images/comment.png" class="comment-icon" alt="Comments" style="margin-right: 5px;">
+                                        {{.CommentCount}} Comments
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{end}}
+                </div>
+            </div>
+            <div class="overlap-1">
+                <div class="rectangle-3"></div>
+                <button type="button" class="div-wrapper-10" onclick="showTab('userPosts')">
+                    <div class="text-wrapper-10">Posts</div>
+                </button>
+            </div>
+            <div class="overlap-2">
+                <div class="rectangle-3"></div>
+                <button type="button" class="div-wrapper-10" onclick="showTab('userComments')">
+                    <div class="text-wrapper-10">Comments</div>
+                </button>
+            </div>
+            <div class="overlap-3">
+                <div class="rectangle-3"></div>
+                <button type="button" class="div-wrapper-10" onclick="showTab('likedPosts')">
+                    <div class="text-wrapper-10">Likes</div>
+                </button>
+            </div>
+            <div class="overlap-4">
+                <div class="rectangle-3"></div>
+                <button type="button" class="div-wrapper-10" onclick="showTab('dislikedPosts')">
+                    <div class="text-wrapper-10">Dislikes</div>
+                </button>
+            </div>
+        </div>
+    
+    <script>
+        function showTab(tabId) {
+            var tabs = document.getElementsByClassName('tab-content');
+            for (var i = 0; i < tabs.length; i++) {
+                tabs[i].style.display = 'none';
+            }
+            document.getElementById(tabId).style.display = 'block';
+        }
+
+        function updateViewCount(postId) {
+            fetch('/update_view_count', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ post_id: postId })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('View count updated successfully');
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Sayfa yüklendiğinde "Your Posts" sekmesini göster
+        document.addEventListener('DOMContentLoaded', function() {
+            showTab('userPosts');
+        });
+        particlesJS('particles-js', {
+        "particles": {
+            "number": {
+                "value": 80,
+                "density": {
+                    "enable": true,
+                    "value_area": 800
+                }
+            },
+            "color": {
+                "value": "#ffffff"
+            },
+            "shape": {
+                "type": "circle",
+                "stroke": {
+                    "width": 0,
+                    "color": "#000000"
+                },
+                "polygon": {
+                    "nb_sides": 5
+                },
+                "image": {
+                    "src": "img/github.svg",
+                    "width": 100,
+                    "height": 100
+                }
+            },
+            "opacity": {
+                "value": 0.5,
+                "random": false,
+                "anim": {
+                    "enable": false,
+                    "speed": 1,
+                    "opacity_min": 0.1,
+                    "sync": false
+                }
+            },
+            "size": {
+                "value": 3,
+                "random": true,
+                "anim": {
+                    "enable": false,
+                    "speed": 40,
+                    "size_min": 0.1,
+                    "sync": false
+                }
+            },
+            "line_linked": {
+                "enable": true,
+                "distance": 150,
+                "color": "#ffffff",
+                "opacity": 0.4,
+                "width": 1
+            },
+            "move": {
+                "enable": true,
+                "speed": 2,
+                "direction": "none",
+                "random": false,
+                "straight": false,
+                "out_mode": "out",
+                "bounce": false,
+                "attract": {
+                    "enable": false,
+                    "rotateX": 600,
+                    "rotateY": 1200
+                }
+            }
+        },
+        "interactivity": {
+            "detect_on": "canvas",
+            "events": {
+                "onhover": {
+                    "enable": true,
+                    "mode": "repulse"
+                },
+                "onclick": {
+                    "enable": true,
+                    "mode": "push"
+                },
+                "resize": true
+            },
+            "modes": {
+                "grab": {
+                    "distance": 400,
+                    "line_linked": {
+                        "opacity": 1
+                    }
+                },
+                "bubble": {
+                    "distance": 400,
+                    "size": 40,
+                    "duration": 2,
+                    "opacity": 8,
+                    "speed": 3
+                },
+                "repulse": {
+                    "distance": 200,
+                    "duration": 0.4
+                },
+                "push": {
+                    "particles_nb": 4
+                },
+                "remove": {
+                    "particles_nb": 2
+                }
+            }
+        },
+        "retina_detect": true
+    });
+    </script>
+</body>
+</html>

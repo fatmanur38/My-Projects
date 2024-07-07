@@ -1,0 +1,259 @@
+body {
+    margin: 0;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    background: url("../static/images/arka\ plan.png") no-repeat center center fixed;
+    background-size: cover;
+}
+
+.container {
+    width: 100%;
+    min-height: 100vh;
+    background: rgba(47, 55, 62, 0.80);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 80px;
+    box-sizing: border-box;
+}
+
+.navbar {
+    width: 100%;
+    height: 80px;
+    background: linear-gradient(80deg, #2F373E 20%, #273037 60%) !important;
+    color: #FFF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.navbar-left {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    color: #b9bcfb7d;
+    font-size: 26px;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    font-weight: 700;
+    line-height: 38px;
+
+}
+
+.divider {
+    width: 1px;
+    height: 38px;
+    background: white;
+    margin-left: 10px;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.button {
+    padding: 12px 20px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    font-weight: 900;
+    letter-spacing: 0.24px;
+    color: white;
+    cursor: pointer;
+}
+
+.register {
+    background-color: #4589fe81;
+}
+
+.login {
+    background-color: #3B4752;
+}
+
+.icon {
+    width: 13px;
+    height: 13px;
+    position: relative;
+}
+
+.register-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.form-container {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(47, 55, 62, 0.89);
+    padding: 20px;
+    border-radius: 21px;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+form h2 {
+    margin-bottom: 20px;
+    color: white;
+    font-size: 32px;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    font-weight: 700;
+    text-align: center;
+}
+
+label {
+    color: white;
+    margin-bottom: 5px;
+    font-size: 16px;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    font-weight: 700;
+}
+
+input {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+}
+
+button {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background: #4589fe;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.40px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background: #154ba9;
+}
+
+.alternative-options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.alternative-options span {
+    color: white;
+    font-size: 14px;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+
+.social-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.social-buttons a {
+    width: 44.96px;
+    height: 44.96px;
+    border-radius: 10px;
+    border: 1px #BCBEC0 solid;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.social-buttons a:hover {
+    transform: scale(1.1);
+}
+
+.social-buttons img {
+    width: 24px;
+    height: 24px;
+}
+
+.additional-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.additional-links span {
+    color: white;
+    font-size: 14px;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    font-weight: 400;
+    margin-bottom: 5px;
+}
+
+.additional-links a {
+    color: #4589fe;
+    font-size: 14px;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.additional-links a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        height: auto;
+        padding: 10px 20px;
+    }
+
+    .divider {
+        width: 100%;
+        height: 1px;
+        margin: 10px 0;
+    }
+
+    .auth-buttons {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .button {
+        flex: 1;
+        justify-content: center;
+        padding: 12px 10px;
+    }
+
+    .container {
+        padding-top: 100px;
+    }
+}
+
