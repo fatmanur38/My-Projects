@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moderator Page</title>
+    <link rel="stylesheet" href="/static/navbar.css">
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+        }
+
+        nav {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: 25%;
+            background-color: #3B4752;
+            position: fixed;
+            height: 100%;
+            overflow: auto;
+        }
+
+        nav li a {
+            display: block;
+            color: #000;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+
+        nav li a.active {
+            background-color: #4589fe;
+            color: white;
+        }
+
+        nav li a:hover:not(.active) {
+            background-color: #555;
+            color: white;
+        }
+
+        .content {
+            flex: 1;
+            padding: 10px;
+            margin-left: 5%; /* Adjust based on the width of your nav */
+            margin-right: 5%;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4589fe;
+            color: white;
+        }
+
+        /* Style for buttons */
+        .approve-btn, .reject-btn {
+            padding: 6px 10px;
+            background-color: #4589fe;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .reject-btn {
+            background-color: #f44336;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <div id="particles-js"></div>
+    <div class="header">
+        <a href="/" class="logo">
+            <span class="logo-divider"></span> <img src="/static/images/logo.png" alt="Home" class="logo-icon">
+            mindmerge
+        </a>
+        <div class="search-bar">
+            <input type="text" placeholder="Type here to search...">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+        <div class="header-buttons">
+            <form action="/profile" method="get" style="display:inline;">
+                <button type="submit" class="profile-button">Profile</button>
+            </form>
+            <form action="/upload" method="get" style="display:inline;">
+                <button type="submit" class="create-button">Create</button>
+            </form>
+            <form action="/logout" method="post" style="display:inline;">
+                <button type="submit" class="logout-button">Log Out</button>
+            </form>
+        </div> 
+    </div>
+    <br><br><br><br><br>
+    <div class="content">
+        <br><br><br><br><br>
+        <h2>Admin Responses</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Request ID</th>
+                    <th>Response</th>
+                    <th>Post Title</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .AdminResponses}}
+                <tr>
+                    <td>{{.ID}}</td>
+                    <td>{{.RequestID}}</td>
+                    <td>{{.Response}}</td>
+                    <td>{{.PostTitle}}</td>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

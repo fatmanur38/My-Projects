@@ -1,0 +1,26 @@
+<!-- templates/report_post.html -->
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Raporla</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Postu Raporla</h1>
+        <form action="/report-post" method="post">
+            <input type="hidden" name="postId" value="{{.PostID}}">
+            <label for="reason">Raporlama Sebebi:</label>
+            <select name="reason" id="reason">
+                <option value="Spam">Spam</option>
+                <option value="Uygunsuz İçerik">Uygunsuz İçerik</option>
+                <option value="Nefret Söylemi">Nefret Söylemi</option>
+                <option value="Diğer">Diğer</option>
+            </select>
+            <button type="submit">Gönder</button>
+        </form>
+    </div>
+</body>
+</html>

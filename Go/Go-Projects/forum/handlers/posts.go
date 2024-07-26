@@ -30,6 +30,8 @@ type Post struct {
 	FormattedCreatedAt string
 	CommentCount       int
 	ViewCount          int
+	IsAdminOrModerator bool
+	IsModerator        bool
 }
 
 type Comment struct {
@@ -49,11 +51,11 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.Method != http.MethodPost {
-		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		utils.RenderTemplate(w, "templates/uploadForm.html", map[string]interface{}{"Error": "Invalid request method"})
 		return
 	}
 
-	r.ParseMultipartForm(10 << 20) // 10 MB limit
+	r.ParseMultipartForm(20 << 20) // 20 MB limit
 
 	title := r.FormValue("title")
 	content := r.FormValue("content")
@@ -61,61 +63,97 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 
 	file, handler, err := r.FormFile("file")
 	var filePath string
-	if err == nil { // Dosya seçilmişse işlemleri yap
+	if err == nil { // If file is selected
 		defer file.Close()
 
+		// Check file size
+		if handler.Size > 20<<20 { // 20 MB
+			utils.RenderTemplate(w, "templates/uploadForm.html", map[string]interface{}{"Error": "File is bigger than 20 MB"})
+			return
+		}
+
+		// Check file type
+		allowedTypes := map[string]bool{
+			"image/jpeg": true,
+			"image/png":  true,
+			"image/gif":  true,
+		}
+		buff := make([]byte, 512)
+		_, err = file.Read(buff)
+		if err != nil {
+			utils.RenderTemplate(w, "templates/uploadForm.html", map[string]interface{}{"Error": "Error reading file"})
+			return
+		}
+		fileType := http.DetectContentType(buff)
+		if !allowedTypes[fileType] {
+			utils.RenderTemplate(w, "templates/uploadForm.html", map[string]interface{}{"Error": "Invalid file type"})
+			return
+		}
+		// Reset file pointer
+		file.Seek(0, 0)
+		// If the file passes the checks
+		// it's saved to the "uploads" directory.
 		uploadDir := "./uploads"
 		if _, err := os.Stat(uploadDir); os.IsNotExist(err) {
 			os.MkdirAll(uploadDir, os.ModePerm)
 		}
-
+		// The directory is created if it doesn't exist.
 		filePath = filepath.Join(uploadDir, handler.Filename)
 		f, err := os.OpenFile(filePath, os.O_WRONLY|os.O_CREATE, 0o666)
 		if err != nil {
-			http.Error(w, "Error saving file: "+err.Error(), http.StatusInternalServerError)
+			utils.RenderTemplate(w, "templates/uploadForm.html", map[string]interface{}{"Error": "Error saving file"})
 			return
 		}
 		defer f.Close()
 
 		if _, err = io.Copy(f, file); err != nil {
-			http.Error(w, "Error writing file: "+err.Error(), http.StatusInternalServerError)
+			utils.RenderTemplate(w, "templates/uploadForm.html", map[string]interface{}{"Error": "Error writing file"})
 			return
 		}
-		// filePath = "/" + filePath
 	} else {
-		// Dosya seçilmemişse varsayılan resim yolunu kullan
-		filePath = "static/images/defult-image.png.jpg" // Varsayılan resim yolunu buraya ekleyin
+		// Use default image path if no file is selected
+		filePath = "static/images/default-image.png"
 	}
 
 	userID, err := utils.GetUserIDFromCookie(r)
 	if err != nil {
-		http.Error(w, "Not logged in", http.StatusForbidden)
+		utils.RenderTemplate(w, "templates/uploadForm.html", map[string]interface{}{"Error": "Not logged in"})
 		return
 	}
-
+	// It inserts the post's details
 	result, err := utils.Db.Exec("INSERT INTO posts (title, image_url, author_id, content) VALUES (?, ?, ?, ?)", title, "/"+filePath, userID, content)
 	if err != nil {
 		log.Printf("Error inserting post: %v", err)
-		http.Error(w, "Database insert error: "+err.Error(), http.StatusInternalServerError)
+		utils.RenderTemplate(w, "templates/uploadForm.html", map[string]interface{}{"Error": "Database insert error"})
 		return
 	}
 
 	postID, err := result.LastInsertId()
 	if err != nil {
 		log.Printf("Error getting last insert ID: %v", err)
-		http.Error(w, "Error getting post ID: "+err.Error(), http.StatusInternalServerError)
+		utils.RenderTemplate(w, "templates/uploadForm.html", map[string]interface{}{"Error": "Error getting post ID"})
 		return
 	}
 
+	// Fetch the user's role
+	role, err := utils.GetUserRole(userID)
+	if err != nil {
+		log.Printf("Error getting user role: %v", err)
+		utils.RenderTemplate(w, "templates/uploadForm.html", map[string]interface{}{"Error": "Error getting user role"})
+		return
+	}
+
+	// For each selected category, it inserts a record into the "post_categories" table with the appropriate role
 	for _, category := range categories {
-		_, err = utils.Db.Exec("INSERT INTO post_categories (post_id, category) VALUES (?, ?)", postID, category)
+		_, err = utils.Db.Exec("INSERT INTO post_categories (post_id, category, roles) VALUES (?, ?, ?)", postID, category, role)
 		if err != nil {
 			log.Printf("Error inserting post category: %v", err)
-			http.Error(w, "Database insert error: "+err.Error(), http.StatusInternalServerError)
+			utils.RenderTemplate(w, "templates/uploadForm.html", map[string]interface{}{"Error": "Database insert error"})
 			return
 		}
 	}
 
+	// it redirects the user to the main page
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
@@ -205,6 +243,9 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	loggedIn := utils.CheckLoginStatus(r)
+	isadmin := utils.IsAdmin(r)
+	ismoderator := utils.IsModerator(r)
+	isadminormoderator := isadmin || ismoderator
 
 	tmpl := template.Must(template.New("index.html").Funcs(template.FuncMap{
 		"split": utils.Split,
@@ -261,19 +302,65 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := struct {
-		LoggedIn  bool
-		Posts     []Post
-		SortOrder string
+		LoggedIn           bool
+		Posts              []Post
+		SortOrder          string
+		IsAdminOrModerator bool
 	}{
-		LoggedIn:  loggedIn,
-		Posts:     posts,
-		SortOrder: sortOrder,
+		LoggedIn:           loggedIn,
+		Posts:              posts,
+		SortOrder:          sortOrder,
+		IsAdminOrModerator: isadminormoderator,
 	}
 
 	err = tmpl.Execute(w, data)
 	if err != nil {
 		log.Printf("Error executing template: %v", err)
 	}
+}
+
+func deletePost(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// Check if the user is logged in
+	if !utils.CheckLoginStatus(r) {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	// Check if the user is an admin or moderator
+	if !utils.IsAdmin(r) && !utils.IsModerator(r) {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
+
+	// Get the post ID from the form
+	err := r.ParseForm()
+	if err != nil {
+		log.Printf("Error parsing form: %v", err)
+		http.Error(w, "Invalid form data", http.StatusBadRequest)
+		return
+	}
+
+	postID := r.FormValue("postID")
+	if postID == "" {
+		http.Error(w, "Post ID is required", http.StatusBadRequest)
+		return
+	}
+
+	// Delete the post from the database
+	_, err = utils.Db.Exec("DELETE FROM posts WHERE id = ?", postID)
+	if err != nil {
+		log.Printf("Error deleting post: %v", err)
+		http.Error(w, "Error deleting post", http.StatusInternalServerError)
+		return
+	}
+
+	// Redirect to the homepage after successful deletion
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 func fetchCommentsByID(postID int, currentUserID int) ([]Comment, error) {

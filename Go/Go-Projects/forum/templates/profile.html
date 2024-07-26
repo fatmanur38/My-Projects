@@ -19,6 +19,16 @@
             <div class="search-icon"></div>
         </div>
         <div class="header-buttons">
+            {{if .IsAdmin}}
+            <form action="/admin_page" method="get" style="display:inline;">
+                <button type="submit" class="admin-button">Admin Page</button>
+            </form>
+            {{end}}
+            {{if .IsModerator}}
+            <form action="/moderator_page" method="get" style="display:inline;">
+                <button type="submit" class="moderator-button">Moderator Page</button>
+            </form>
+            {{end}}
             <form action="/upload" method="get" style="display:inline;">
                 <button type="submit" class="create-button">Create</button>
             </form>

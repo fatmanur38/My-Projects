@@ -52,6 +52,7 @@ var (
 	facebookOauthConfig *oauth2.Config
 )
 
+// CSRF (Siteler Arası İstek Sahtekarlığı) Saldırıları
 var (
 	oauthStateString         = "random"
 	oauthStateStringGitHub   = "random"
@@ -90,189 +91,6 @@ func init() {
 		},
 		Endpoint: facebook.Endpoint,
 	}
-}
-
-func handleFacebookLogin(w http.ResponseWriter, r *http.Request) {
-	facebookOauthStateString = generateNonce()
-	url := facebookOauthConfig.AuthCodeURL(facebookOauthStateString)
-	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
-}
-
-func handleFacebookCallback(w http.ResponseWriter, r *http.Request) {
-    if r.FormValue("state") != facebookOauthStateString {
-        http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-        return
-    }
-
-    code := r.FormValue("code")
-    token, err := facebookOauthConfig.Exchange(context.Background(), code)
-    if err != nil {
-        fmt.Printf("oauthConf.Exchange() failed with '%s'\n", err)
-        http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-        return
-    }
-
-    resp, err := http.Get(fmt.Sprintf("https://graph.facebook.com/me?access_token=%s&fields=id,name,email", token.AccessToken))
-    if err != nil {
-        http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-        return
-    }
-    defer resp.Body.Close()
-
-    var facebookUser struct {
-        ID    string `json:"id"`
-        Name  string `json:"name"`
-        Email string `json:"email"`
-    }
-
-    if err := json.NewDecoder(resp.Body).Decode(&facebookUser); err != nil {
-        http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-        return
-    }
-
-    var userID int
-    err = utils.Db.QueryRow("SELECT id FROM users WHERE email = ?", facebookUser.Email).Scan(&userID)
-    if err != nil {
-        if err == sql.ErrNoRows {
-            _, err = utils.Db.Exec("INSERT INTO users (username, email) VALUES (?, ?)", facebookUser.Name, facebookUser.Email)
-            if err != nil {
-                fmt.Printf("Error registering user: %v", err)
-                http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-                return
-            }
-            err = utils.Db.QueryRow("SELECT id FROM users WHERE email = ?", facebookUser.Email).Scan(&userID)
-            if err != nil {
-                fmt.Printf("Error fetching new user ID: %v", err)
-                http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-                return
-            }
-        } else {
-            fmt.Printf("Error querying user: %v", err)
-            http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-            return
-        }
-    }
-
-    sessionToken := utils.GenerateSessionToken()
-    expiration := time.Now().Add(24 * time.Hour)
-
-    _, err = utils.Db.Exec("UPDATE users SET session_token = ?, token_expires = ? WHERE id = ?", sessionToken, expiration, userID)
-    if err != nil {
-        http.Error(w, "Failed to update session token.", http.StatusInternalServerError)
-        return
-    }
-
-    utils.SetLoginCookie(w, userID, sessionToken, int(time.Until(expiration).Seconds()))
-    http.Redirect(w, r, "/", http.StatusSeeOther)
-}
-
-
-func handleGitHubLogin(w http.ResponseWriter, r *http.Request) {
-	oauthStateStringGitHub = generateNonce()
-	url := githubOauthConfig.AuthCodeURL(oauthStateStringGitHub, oauth2.AccessTypeOffline, oauth2.ApprovalForce)
-	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
-}
-
-func handleGitHubCallback(w http.ResponseWriter, r *http.Request) {
-    if r.FormValue("state") != oauthStateStringGitHub {
-        http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-        return
-    }
-
-    code := r.FormValue("code")
-    token, err := githubOauthConfig.Exchange(context.Background(), code)
-    if err != nil {
-        fmt.Printf("oauthConfGitHub.Exchange() failed with '%s'\n", err)
-        http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-        return
-    }
-
-    client := githubOauthConfig.Client(context.Background(), token)
-    resp, err := client.Get("https://api.github.com/user")
-    if err != nil {
-        http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-        return
-    }
-    defer resp.Body.Close()
-
-    var githubUser struct {
-        ID    int    `json:"id"`
-        Email string `json:"email"`
-        Name  string `json:"name"`
-    }
-
-    if err := json.NewDecoder(resp.Body).Decode(&githubUser); err != nil {
-        http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-        return
-    }
-
-    if githubUser.Email == "" {
-        // Fetch the user's emails if the email field is empty
-        resp, err := client.Get("https://api.github.com/user/emails")
-        if err != nil {
-            http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-            return
-        }
-        defer resp.Body.Close()
-
-        var emails []struct {
-            Email   string `json:"email"`
-            Primary bool   `json:"primary"`
-        }
-
-        if err := json.NewDecoder(resp.Body).Decode(&emails); err != nil {
-            http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-            return
-        }
-
-        for _, email := range emails {
-            if email.Primary {
-                githubUser.Email = email.Email
-                break
-            }
-        }
-    }
-
-    if githubUser.Email == "" {
-        http.Error(w, "Unable to fetch email from GitHub", http.StatusInternalServerError)
-        return
-    }
-
-    // Continue with the rest of the login/registration process
-    var userID int
-    err = utils.Db.QueryRow("SELECT id FROM users WHERE email = ?", githubUser.Email).Scan(&userID)
-    if err != nil {
-        if err == sql.ErrNoRows {
-            _, err = utils.Db.Exec("INSERT INTO users (username, email) VALUES (?, ?)", githubUser.Name, githubUser.Email)
-            if err != nil {
-                fmt.Printf("Error registering user: %v", err)
-                http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-                return
-            }
-            err = utils.Db.QueryRow("SELECT id FROM users WHERE email = ?", githubUser.Email).Scan(&userID)
-            if err != nil {
-                fmt.Printf("Error fetching new user ID: %v", err)
-                http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-                return
-            }
-        } else {
-            fmt.Printf("Error querying user: %v", err)
-            http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-            return
-        }
-    }
-
-    sessionToken := utils.GenerateSessionToken()
-    expiration := time.Now().Add(24 * time.Hour)
-
-    _, err = utils.Db.Exec("UPDATE users SET session_token = ?, token_expires = ? WHERE id = ?", sessionToken, expiration, userID)
-    if err != nil {
-        http.Error(w, "Failed to update session token.", http.StatusInternalServerError)
-        return
-    }
-
-    utils.SetLoginCookie(w, userID, sessionToken, int(time.Until(expiration).Seconds()))
-    http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 func handleGoogleLogin(w http.ResponseWriter, r *http.Request) {
@@ -349,6 +167,188 @@ func handleGoogleCallback(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
+func handleFacebookLogin(w http.ResponseWriter, r *http.Request) {
+	facebookOauthStateString = generateNonce()
+	url := facebookOauthConfig.AuthCodeURL(facebookOauthStateString)
+	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
+}
+
+func handleFacebookCallback(w http.ResponseWriter, r *http.Request) {
+	if r.FormValue("state") != facebookOauthStateString {
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+		return
+	}
+
+	code := r.FormValue("code")
+	token, err := facebookOauthConfig.Exchange(context.Background(), code)
+	if err != nil {
+		fmt.Printf("oauthConf.Exchange() failed with '%s'\n", err)
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+		return
+	}
+
+	resp, err := http.Get(fmt.Sprintf("https://graph.facebook.com/me?access_token=%s&fields=id,name,email", token.AccessToken))
+	if err != nil {
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+		return
+	}
+	defer resp.Body.Close()
+
+	var facebookUser struct {
+		ID    string `json:"id"`
+		Name  string `json:"name"`
+		Email string `json:"email"`
+	}
+
+	if err := json.NewDecoder(resp.Body).Decode(&facebookUser); err != nil {
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+		return
+	}
+
+	var userID int
+	err = utils.Db.QueryRow("SELECT id FROM users WHERE email = ?", facebookUser.Email).Scan(&userID)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			_, err = utils.Db.Exec("INSERT INTO users (username, email) VALUES (?, ?)", facebookUser.Name, facebookUser.Email)
+			if err != nil {
+				fmt.Printf("Error registering user: %v", err)
+				http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+				return
+			}
+			err = utils.Db.QueryRow("SELECT id FROM users WHERE email = ?", facebookUser.Email).Scan(&userID)
+			if err != nil {
+				fmt.Printf("Error fetching new user ID: %v", err)
+				http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+				return
+			}
+		} else {
+			fmt.Printf("Error querying user: %v", err)
+			http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+			return
+		}
+	}
+
+	sessionToken := utils.GenerateSessionToken()
+	expiration := time.Now().Add(24 * time.Hour)
+
+	_, err = utils.Db.Exec("UPDATE users SET session_token = ?, token_expires = ? WHERE id = ?", sessionToken, expiration, userID)
+	if err != nil {
+		http.Error(w, "Failed to update session token.", http.StatusInternalServerError)
+		return
+	}
+
+	utils.SetLoginCookie(w, userID, sessionToken, int(time.Until(expiration).Seconds()))
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
+func handleGitHubLogin(w http.ResponseWriter, r *http.Request) {
+	oauthStateStringGitHub = generateNonce()
+	url := githubOauthConfig.AuthCodeURL(oauthStateStringGitHub, oauth2.AccessTypeOffline, oauth2.ApprovalForce)
+	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
+}
+
+func handleGitHubCallback(w http.ResponseWriter, r *http.Request) {
+	if r.FormValue("state") != oauthStateStringGitHub {
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+		return
+	}
+
+	code := r.FormValue("code")
+	token, err := githubOauthConfig.Exchange(context.Background(), code)
+	if err != nil {
+		fmt.Printf("oauthConfGitHub.Exchange() failed with '%s'\n", err)
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+		return
+	}
+
+	client := githubOauthConfig.Client(context.Background(), token)
+	resp, err := client.Get("https://api.github.com/user")
+	if err != nil {
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+		return
+	}
+	defer resp.Body.Close()
+
+	var githubUser struct {
+		ID    int    `json:"id"`
+		Email string `json:"email"`
+		Name  string `json:"name"`
+	}
+
+	if err := json.NewDecoder(resp.Body).Decode(&githubUser); err != nil {
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+		return
+	}
+
+	if githubUser.Email == "" {
+		// Fetch the user's emails if the email field is empty
+		resp, err := client.Get("https://api.github.com/user/emails")
+		if err != nil {
+			http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+			return
+		}
+		defer resp.Body.Close()
+
+		var emails []struct {
+			Email   string `json:"email"`
+			Primary bool   `json:"primary"`
+		}
+
+		if err := json.NewDecoder(resp.Body).Decode(&emails); err != nil {
+			http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+			return
+		}
+
+		for _, email := range emails {
+			if email.Primary {
+				githubUser.Email = email.Email
+				break
+			}
+		}
+	}
+
+	if githubUser.Email == "" {
+		http.Error(w, "Unable to fetch email from GitHub", http.StatusInternalServerError)
+		return
+	}
+
+	// Continue with the rest of the login/registration process
+	var userID int
+	err = utils.Db.QueryRow("SELECT id FROM users WHERE email = ?", githubUser.Email).Scan(&userID)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			_, err = utils.Db.Exec("INSERT INTO users (username, email) VALUES (?, ?)", githubUser.Name, githubUser.Email)
+			if err != nil {
+				fmt.Printf("Error registering user: %v", err)
+				http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+				return
+			}
+			err = utils.Db.QueryRow("SELECT id FROM users WHERE email = ?", githubUser.Email).Scan(&userID)
+			if err != nil {
+				fmt.Printf("Error fetching new user ID: %v", err)
+				http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+				return
+			}
+		} else {
+			fmt.Printf("Error querying user: %v", err)
+			http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+			return
+		}
+	}
+
+	sessionToken := utils.GenerateSessionToken()
+	expiration := time.Now().Add(24 * time.Hour)
+
+	_, err = utils.Db.Exec("UPDATE users SET session_token = ?, token_expires = ? WHERE id = ?", sessionToken, expiration, userID)
+	if err != nil {
+		http.Error(w, "Failed to update session token.", http.StatusInternalServerError)
+		return
+	}
+
+	utils.SetLoginCookie(w, userID, sessionToken, int(time.Until(expiration).Seconds()))
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}
+
 func generateNonce() string {
 	nonce := make([]byte, 16)
 	rand.Read(nonce)
@@ -385,9 +385,9 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var dbEmail, dbPassword string
+	var dbEmail, dbPassword, role string
 	var userID int
-	err := utils.Db.QueryRow("SELECT id, email, password FROM users WHERE email = ?", email).Scan(&userID, &dbEmail, &dbPassword)
+	err := utils.Db.QueryRow("SELECT id, email, password, role FROM users WHERE email = ?", email).Scan(&userID, &dbEmail, &dbPassword, &role)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			utils.RenderTemplate(w, "templates/login.html", map[string]interface{}{
@@ -445,18 +445,7 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 	email := r.FormValue("email")
 	password := r.FormValue("password")
 	confirmPassword := r.FormValue("confirmPassword")
-
-	// GitHub ile kayıt olma işlemi
-	if email == "" && password == "" {
-		handleGitHubLogin(w, r)
-		return
-	}
-
-	// Facebook ile kayıt olma işlemi
-	if email == "" && password == "" {
-		handleFacebookLogin(w, r)
-		return
-	}
+	role := r.FormValue("role")
 
 	if password != confirmPassword {
 		utils.RenderTemplate(w, "templates/register.html", map[string]interface{}{
@@ -488,7 +477,11 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	_, err = utils.Db.Exec("INSERT INTO users (username, email, password) VALUES (?, ?, ?)", username, email, string(hashedPassword))
+	if role == "moderator_request" {
+		role = "User"
+	}
+
+	res, err := utils.Db.Exec("INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)", username, email, string(hashedPassword), role)
 	if err != nil {
 		utils.RenderTemplate(w, "templates/register.html", map[string]interface{}{
 			"RegisterErrorMsg": fmt.Sprintf("Error registering user: %v", err),
@@ -498,14 +491,30 @@ func registerHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	userID, err := res.LastInsertId()
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		return
+	}
+
+	if r.FormValue("role") == "moderator_request" {
+		_, err := utils.Db.Exec("INSERT INTO all_user_requests (user_id, status) VALUES (?, 'Pending')", userID)
+		if err != nil {
+			log.Println(err)
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+	}
+
 	http.Redirect(w, r, "/login", http.StatusSeeOther)
 }
 
 func logoutHandler(w http.ResponseWriter, r *http.Request) {
-	userid, err := utils.GetUserIDFromCookie(r)
+	userID, err := utils.GetUserIDFromCookie(r)
 	if err != nil {
 		log.Println(err)
 	}
-	utils.SetLoginCookie(w, userid, "", -1)
+	utils.SetLoginCookie(w, userID, "", -1)
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 }

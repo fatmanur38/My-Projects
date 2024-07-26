@@ -1,7 +1,9 @@
 package utils
 
 import (
+	"database/sql"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -68,4 +70,52 @@ func CheckLoginStatus(r *http.Request) bool {
 	}
 
 	return true
+}
+
+func GetUserRole(userID int) (string, error) {
+	var role string
+	query := "SELECT role FROM users WHERE id = ?"
+
+	err := Db.QueryRow(query, userID).Scan(&role)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return "", nil // User not found
+		}
+		log.Printf("Error retrieving user role: %v", err)
+		return "", err
+	}
+
+	return role, nil
+}
+
+func IsAdmin(r *http.Request) bool {
+	userID, err := GetUserIDFromCookie(r)
+	if err != nil {
+		return false
+	}
+
+	var role string
+	err = Db.QueryRow("SELECT role FROM users WHERE id = ?", userID).Scan(&role)
+	if err != nil {
+		log.Println(err)
+		return false
+	}
+
+	return role == "admin"
+}
+
+func IsModerator(r *http.Request) bool {
+	userID, err := GetUserIDFromCookie(r)
+	if err != nil {
+		return false
+	}
+
+	var role string
+	err = Db.QueryRow("SELECT role FROM users WHERE id = ?", userID).Scan(&role)
+	if err != nil {
+		log.Println(err)
+		return false
+	}
+
+	return role == "Moderator"
 }

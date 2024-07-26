@@ -141,8 +141,18 @@
                             <div class="post-comments">
                                 <img src="/static/images/comment.png" class="comment-icon" alt="Comments" style="margin-right: 5px;">
                                 {{.CommentCount}} Comments                          
-                            </div>                            
-                        </div>     
+                            </div> 
+                            <div class="post-actions">
+                                <form action="/delete-Post" method="post" style="display: inline;">
+                                    <input type="hidden" name="postID" value="{{.ID}}">
+                                    <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete this post?');">Delete</button>
+                                </form>
+                                <form method="get" action="/report-post">
+                                    <input type="hidden" name="postId" value="{{.ID}}">
+                                    <button type="submit" class="reject-btn">Report</button>
+                                </form>
+                            </div>           
+                        </div>
                     </div>
                 </div>
                 {{end}}

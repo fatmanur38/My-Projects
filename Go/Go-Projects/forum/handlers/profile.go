@@ -12,7 +12,6 @@ import (
 	"time"
 
 	"forum/utils"
-
 )
 
 type User struct {
@@ -32,7 +31,8 @@ func profileHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Not logged in", http.StatusForbidden)
 		return
 	}
-
+	isAdmin := utils.IsAdmin(r)
+	ismoderator := utils.IsModerator(r)
 	var username, email string
 	var name, about, userIcon sql.NullString
 	var createdAt time.Time
@@ -85,6 +85,8 @@ func profileHandler(w http.ResponseWriter, r *http.Request) {
 		About          string
 		UserIcon       string
 		CreatedAt      string
+		IsAdmin        bool // Admin kullanıcı mı?
+		IsModerator    bool
 	}{
 		LoggedIn:       true,
 		Posts:          posts,
@@ -97,10 +99,12 @@ func profileHandler(w http.ResponseWriter, r *http.Request) {
 		About:          about.String,
 		UserIcon:       userIcon.String,
 		CreatedAt:      formattedJoinDate,
+		IsAdmin:        isAdmin, // Bu kısmı kullanıcının admin olup olmadığını kontrol eden bir ifade ile doldurun
+		IsModerator:    ismoderator,
 	}
 
 	funcMap := template.FuncMap{
-		"split":  utils.Split,
+		"split": utils.Split,
 	}
 
 	tmpl, err := template.New("profile.html").Funcs(funcMap).ParseFiles("templates/profile.html")

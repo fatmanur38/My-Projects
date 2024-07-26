@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindmerge</title>
+    <link rel="stylesheet" href="/static/navbar.css">
+<style>
+    
+body {
+  margin: 0;
+  display: flex;
+}
+
+nav {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 25%;
+  background-color: #3B4752;
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+}
+
+nav li a {
+  display: block;
+  color: #000;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+nav li a.active {
+  background-color: #4589fe;
+  color: white;
+}
+
+nav li a:hover:not(.active) {
+  background-color: #555;
+  color: white;
+}
+
+.content {
+  flex: 1;
+  padding: 1px;
+  margin-left: 5%; /* Adjust based on the width of your nav */
+  margin-right: 5%;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+table, th, td {
+  border: 1px solid #ddd;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #4589fe;
+  color: white;
+}
+
+/* Style for buttons */
+.approve-btn, .reject-btn {
+  padding: 6px 10px;
+  background-color: #4589fe;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.reject-btn {
+  background-color: #f44336;
+  margin-left: 5px;
+}
+
+/* Style for hidden input fields */
+.hidden-input {
+  display: none;
+}
+
+</style>
+
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <div id="particles-js"></div>
+    <div class="header">
+        <a href="/" class="logo">
+            <span class="logo-divider"></span> <img src="/static/images/logo.png" alt="Home" class="logo-icon">
+            mindmerge
+        </a>
+        <div class="search-bar">
+            <input type="text" placeholder="Type here to search...">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+        <div class="header-buttons">
+            <form action="/profile" method="get" style="display:inline;">
+                <button type="submit" class="profile-button">Profile</button>
+            </form>
+            <form action="/upload" method="get" style="display:inline;">
+                <button type="submit" class="create-button">Create</button>
+            </form>
+            <form action="/logout" method="post" style="display:inline;">
+                <button type="submit" class="logout-button">Log Out</button>
+            </form>
+        </div> 
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+        <!-- <nav>
+            <ul>
+              <li><a class="active" href="/admin_page">Admin Dashboard</a></li>
+              <li><a href="/moderator_list">Moderators</a></li>
+            </ul>
+        </nav> -->
+
+
+
+<div class="content">
+  <h2>Confirm Moderators Requests</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>User ID</th>
+        <th>Approve</th>
+        <th>Reject</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{range .ModeratorRequests}}
+      <tr>
+        <td>{{.User.Username}}</td>
+        <td>{{.User.Email}}</td>
+        <td>{{.User.ID}}</td>
+        <td>
+          <form method="post" action="/approve-reject">
+            <input type="hidden" name="userId" value="{{.User.ID}}">
+            <input type="hidden" name="action" value="approve">
+            <input type="hidden" name="redirectURL" value="/admin_page">
+            <button class="approve-btn" type="submit">Approve</button>
+          </form>
+        </td>
+        <td>
+          <form method="post" action="/approve-reject">
+            <input type="hidden" name="userId" value="{{.User.ID}}">
+            <input type="hidden" name="action" value="reject">
+            <input type="hidden" name="redirectURL" value="/admin_page">
+            <button class="reject-btn" type="submit">Reject</button>
+          </form>
+        </td>
+      </tr>
+      {{end}}
+    </tbody>
+  </table>
+  <h2>All Users</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Username</th>
+      <th>Email</th>
+      <th>Role</th>
+      <th>Change Role</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{range .Users}}
+    <tr>
+      <td>{{.Username}}</td>
+      <td>{{.Email}}</td>
+      <td>{{.Role}}</td>
+      <td>
+        <form method="post" action="/change-role">
+          <input type="hidden" name="userId" value="{{.ID}}">
+          {{if eq .Role "Moderator"}}
+          <input type="hidden" name="newRole" value="User">
+          <input type="hidden" name="redirectURL" value="/admin_page">
+          <button class="approve-btn" type="submit">Demote Moderator</button>
+          {{else if eq .Role "User"}}
+          <input type="hidden" name="newRole" value="Moderator">
+          <input type="hidden" name="redirectURL" value="/admin_page">
+          <button class="approve-btn" type="submit">Promote Moderator</button>
+          {{else}}
+          <input type="hidden" name="newRole" value="User">
+          {{end}}
+        </form>
+      </td>
+    </tr>
+    {{end}}
+  </tbody>
+</table>
+<h2>All Moderators</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <!-- <th>User ID</th> -->
+            <th>Demote</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{range .Moderators}}
+        <tr>
+            <td>{{.Username}}</td>
+            <td>{{.Email}}</td>
+            <!-- <td>{{.ID}}</td> -->
+            <td>
+                <form method="post" action="/change-role">
+                    <input type="hidden" name="userId" value="{{.ID}}">
+                    <input type="hidden" name="newRole" value="User">
+                    <input type="hidden" name="redirectURL" value="/admin_page">
+                    <button class="approve-btn" type="submit">Demote Moderator</button>
+                </form>
+            </td>
+        </tr>
+        {{end}}
+    </tbody>
+</table>
+<h2>All Posts</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Content</th>
+      <th>Author</th>
+      <th>Created At</th>
+      <th>Image</th> <!-- Add a new column for the image -->
+      <th>Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{range .Posts}}
+    <tr>
+      <td>{{.Title}}</td>
+      <td>{{.Content}}</td>
+      <td>{{.Author}}</td>
+      <td>{{.CreatedAt}}</td>
+      <td>
+        {{if .ImageURL}}
+        <img src="{{.ImageURL}}" alt="Post Image" style="max-width: 100px; max-height: 100px;">
+        {{end}}
+      </td> <!-- Add an image element -->
+      <td>
+        <form method="post" action="/delete-Post">
+          <input type="hidden" name="postId" value="{{.ID}}">
+          <button class="reject-btn" type="submit">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {{end}}
+  </tbody>
+</table>
+  <!-- <h2>Confirm Moderators Requests</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>User ID</th>
+        <th>Approve</th>
+        <th>Reject</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{range .ModeratorRequests}}
+      <tr>
+        <td>{{.User.Username}}</td>
+        <td>{{.User.Email}}</td>
+        <td>{{.User.ID}}</td>
+        <td>
+          <form method="post" action="/approve-reject">
+            <input type="hidden" name="userId" value="{{.User.ID}}">
+            <input type="hidden" name="action" value="approve">
+            <button class="approve-btn" type="submit">Approve</button>
+          </form>
+        </td>
+        <td>
+          <form method="post" action="/approve-reject">
+            <input type="hidden" name="userId" value="{{.User.ID}}">
+            <input type="hidden" name="action" value="reject">
+            <button class="reject-btn" type="submit">Reject</button>
+          </form>
+        </td>
+      </tr>
+      {{end}}
+    </tbody>
+  </table> -->
+  <h2>All User Requests</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>User ID</th>
+        <th>Approve</th>
+        <th>Reject</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{range .AllRequests}}
+      <tr>
+        <td>{{.User.Username}}</td>
+        <td>{{.User.Email}}</td>
+        <td>{{.User.ID}}</td>
+        <td>
+          <form method="post" action="/approve-reject">
+            <input type="hidden" name="userId" value="{{.User.ID}}">
+            <input type="hidden" name="action" value="approve">
+            <input type="hidden" name="redirectURL" value="/admin_page">
+            <button class="approve-btn" type="submit">Approve</button>
+          </form>
+        </td>
+        <td>
+          <form method="post" action="/approve-reject">
+            <input type="hidden" name="userId" value="{{.User.ID}}">
+            <input type="hidden" name="action" value="reject">
+            <input type="hidden" name="redirectURL" value="/admin_page">
+            <button class="reject-btn" type="submit">Reject</button>
+          </form>
+        </td>
+      </tr>
+      {{end}}
+    </tbody>
+  </table>
+  <h2>Reported Posts</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Post Title</th>
+        <th>Moderator</th>
+        <th>Reason</th>
+        <th>Status</th>
+        <th>Image</th>
+        <th>Review</th>
+        
+      </tr>
+    </thead>
+    <tbody>
+      {{range .Reports}}
+      <tr>
+        <td>{{.PostTitle}}</td>
+        <td>{{.ModeratorName}}</td>
+        <td>{{.Reason}}</td>
+        <td>{{.Status}}</td>
+        <td>
+          {{if .ImageURL}}
+          <img src="{{.ImageURL}}" alt="Post Image" style="max-width: 100px; max-height: 100px;">
+          {{end}}
+        </td> <!-- Add an image element -->
+        <td>
+          <form method="post" action="/review-report">
+            <input type="hidden" name="reportId" value="{{.ID}}">
+            <input type="hidden" name="action" value="approve">
+            <input type="hidden" name="redirectURL" value="/admin_page">
+            <button class="approve-btn" type="submit">Approve</button>
+          </form>
+          <form method="post" action="/review-report" onsubmit="return handleReject(this);">
+            <input type="hidden" name="reportId" value="{{.ID}}">
+            <input type="hidden" name="action" value="reject">
+            <input type="hidden" name="redirectURL" value="/admin_page">
+            <textarea name="rejectionReason" placeholder="Provide a reason for rejection" style="display:none;"></textarea>
+            <button class="reject-btn" type="button" onclick="showRejectionReason(this)">Reject</button>
+            <button class="reject-submit-btn" type="submit" style="display:none;">Submit Rejection</button>
+          </form>
+        </td>
+      </tr>
+      {{end}}
+    </tbody>
+  </table>
+  
+  <script>
+  function showRejectionReason(button) {
+    const form = button.closest('form');
+    const textarea = form.querySelector('textarea[name="rejectionReason"]');
+    const submitButton = form.querySelector('.reject-submit-btn');
+  
+    if (textarea.style.display === 'none') {
+      textarea.style.display = 'block';
+      submitButton.style.display = 'inline';
+      button.style.display = 'none';
+    }
+  }
+  
+  function handleReject(form) {
+    const textarea = form.querySelector('textarea[name="rejectionReason"]');
+    if (textarea.value.trim() === '') {
+      alert('Please provide a reason for rejection.');
+      return false;
+    }
+    return true;
+  }
+  </script>
+  
+</div>
+
+</body>
+</html>

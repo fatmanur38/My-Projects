@@ -18,7 +18,7 @@ func main() {
 	utils.InitDatabase()   // Initialize the global database connection
 	defer utils.Db.Close() // Ensure the database connection is closed when main exits
 	utils.CreateTables()   // Create database tables
-
+	utils.InsertDefaultAdmin()
 	handlers.SetupRoutes() // Set up HTTP server
 
 	err := http.ListenAndServe(":8040", nil)
